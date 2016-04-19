@@ -1,2 +1,4 @@
-A 3
-B 5
+A ip 3
+B ip 5
+Time 30
+TimeU 90
