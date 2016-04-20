@@ -27,6 +27,8 @@ public class Proyecto2 {
     /**
      * @param args the command line arguments
      */
+    static int time=0;
+    static int timeU=0;
     public static void main(String[] args) throws IOException {
         JFrame frameTablas = new JFrame();
 
@@ -36,10 +38,14 @@ public class Proyecto2 {
         ForwardingTable ft = new ForwardingTable(nodes);
         Router router = new Router(nodes);
         //Creamos listener para escuchar puerto 9080 mensajes de nodos vecinos
-        Listener listener = new Listener();
+        Listener listener = new Listener(router);
         Thread threadListener = new Thread(listener);
         threadListener.start();
         
+        //crear listenerApp y threadApp y correrlo
+        //ListenerApp listenerApp = new ListenerApp(ft);
+        //Thread threadApp = new Thread(listenerApp);
+        //threadApp.start();
         
         JScrollPane scrollPane1 = new JScrollPane(router.tableRouter);
         scrollPane1.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new EtchedBorder()));

@@ -39,12 +39,21 @@ public class ConfigParser {
                     }
                     else if(data.length==3){
                         String id = data[0];
-                        int cost = Integer.parseInt(data[1]);
-                        nodes.add(new Node(id,cost));
+                        String ip = data[1];
+                        int cost = Integer.parseInt(data[2]);
+                        nodes.add(new Node(id,cost,ip));
                     }
                     
                     else if(data.length == 2){
-                        
+                        if(data[0].equalsIgnoreCase("time")){
+                            int time = Integer.parseInt(data[1]);
+                            Proyecto2.time = time;
+                        }
+                        else if(data[0].equalsIgnoreCase("timeu")){
+                             int time = Integer.parseInt(data[1]);
+                            Proyecto2.timeU = time;
+                            
+                        }
                     
                     }
 
