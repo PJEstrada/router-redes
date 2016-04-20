@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,8 +24,10 @@ public class NodeConnection implements Runnable{
     BufferedReader input;
     DataOutputStream output;
     boolean connectionOpen;
-    public NodeConnection(Socket clientSocket) throws IOException{
+    Router router;
+    public NodeConnection(Socket clientSocket,Router router) throws IOException{
         this.socket = clientSocket;
+        this.router = router;
                 //Obteniendo IP del cliente
         InetAddress ipCliente = clientSocket.getInetAddress();
         //System.out.print("IP: "+ipCliente);
@@ -55,6 +59,7 @@ public class NodeConnection implements Runnable{
     
     @Override
     public void run() {
+        String routerName,typeName;
         while(connectionOpen){
             
             try{
@@ -64,19 +69,73 @@ public class NodeConnection implements Runnable{
                     ;
                 }
                 linea = input.readLine();
+                System.out.println("Linea 1: "+linea);
+                String[] fromData = linea.split(":");
+                if(fromData.length==2&&fromData[0].equalsIgnoreCase("FROM")){
+                    System.out.println("From Ok.");
+                    routerName = fromData[1];
+                    //Parseamos el tipo del mensaje
+                    while(!input.ready()){
+                        ;
+                    }
+                    linea = input.readLine();  
+                    System.out.println("Linea 2: "+linea);
+                    String[] typeData = linea.split(":");
+                    if(typeData.length==2&&typeData[0].equalsIgnoreCase("TYPE")){
+                       typeName  = typeData[1]; 
+                       if(typeName.equalsIgnoreCase("HELLO")){
+                           
+                       
+                       }
+                       else if(typeName.equalsIgnoreCase("DV")){
+                       
+                       
+                       }
+                    }
+                    else{
+                        sendResponse("Bad Request.");
+                    }
+                   
+                    
+                    
+                    
+                    
+                }
+                else{
+                    sendResponse("Bad Request.");
+                }
+               
+                
+                
                 sendResponse("From:<Router que notifica>\n" +
                             "Type:WELCOME");
                 
-                
-                      
+      
             }
             catch (Exception e){
                 e.printStackTrace();
+                try {
+                    this.closeConnection();
+                } catch (IOException ex1) {
+                    Logger.getLogger(NodeConnection.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+               Logger.getLogger(NodeConnection.class.getName()).log(Level.SEVERE, null, e);
+               connectionOpen = false;
             }
         
         
         
         }
     }
+    
+    
+    public void closeConnection() throws IOException{
+        this.input.close();
+        this.output.close();
+        this.socket.close();
+        System.out.println("LISTENER: Connection Closed.");
+    
+    }
+    
     
 }

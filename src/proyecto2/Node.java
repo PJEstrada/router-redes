@@ -18,14 +18,14 @@ public class Node {
     public int cost;
     public Socket socket;
     public int tableId;
+    public String ip;
     
-    
-    public Node(String id, int cost){
+    public Node(String id, int cost,String ip){
         this.tableId = nodeCounter;
         nodeCounter++;
         this.id = id;
         this.cost = cost;
-        
+        this.ip = ip;
         
     }
     
