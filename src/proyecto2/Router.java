@@ -57,6 +57,15 @@ public class Router {
     
     }
     
+    public Node getNode(String id){
+        for(Node n: this.nodes){
+            if(n.id.equals(id)||n.ip.equals(id)){
+                return n;
+            }
+        
+        }
+        return null;
+    }
     
     public void processValues(){
         

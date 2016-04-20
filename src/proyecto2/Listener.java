@@ -15,10 +15,10 @@ import java.net.Socket;
  */
 public class Listener implements Runnable{
     final ServerSocket socket;
-    
-    public Listener() throws IOException{
+    Router router;
+    public Listener(Router r) throws IOException{
         socket  = new ServerSocket(9080);
-    
+        this.router = r;
     }
     
     @Override
@@ -31,7 +31,7 @@ public class Listener implements Runnable{
 
                 //2. Preparamos una respuesta HTTP
                 //requestHttp(reader,output);
-                NodeConnection request = new NodeConnection(clientSocket);
+                NodeConnection request = new NodeConnection(clientSocket,this.router);
                 //4. Cerramos el socket
                 Thread thread = new Thread(request);
                 
