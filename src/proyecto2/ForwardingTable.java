@@ -18,11 +18,11 @@ public class ForwardingTable {
     JTable tabla;
     ArrayList<Node> nodes;
     ArrayList<ArrayList<String>> forwardingTable;
-    //router?
+    Router router;
     
-    public ForwardingTable(ArrayList<Node> nodes){    
-        this.nodes = nodes;
-        
+    public ForwardingTable(ArrayList<Node> nodes /*, Router router*/){    
+        this.nodes = nodes; 
+        this.router = new Router(nodes);
         /*Object rowData[][] = { { "Node A", "Node D"},
                                { "Node B", "Node A"} };
         Object columnNames[] = { "Destino", "A Traves De"};*/
