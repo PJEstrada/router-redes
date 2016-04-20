@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,12 +21,17 @@ public class ForwardingTable {
     
     JTable tabla;
     ArrayList<Node> nodes;
+    ArrayList<String> vecinos;
     ArrayList<ArrayList<String>> forwardingTable;
     Router router;
     ArrayList<Message> mensajesRecibidos;
     
     public ForwardingTable(ArrayList<Node> nodes /*, Router router*/){    
         this.nodes = nodes; 
+        //guardar nodos vecinos
+        for(Node n : nodes){
+            vecinos.add(n.id);
+        }
         this.router = new Router(nodes);
         mensajesRecibidos = new ArrayList<Message>();
         
@@ -77,9 +83,94 @@ public class ForwardingTable {
     public void recalculateTable(){
         //Recalcular la tabla de routing 
         //es decir llenar el segundo valor de cada fila
-        //con la interfaz de salida correspondiente
+        //con la interfaz de salida correspondiente        
+        //LEER LA TABLA DE ROUTING  
         
-        //LEER LA TABLA DE ROUTING        
+        ArrayList<ArrayList<String>> newFT = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<Integer>> rt = router.routingTable;
+        ArrayList<String> ipNodos = new ArrayList<String>(); // = router.getIpNodos(); !!!!!!!!!!
+        
+        //agregar tantas filas como tenga rt
+        //INICIALIZAR NUEVA TABLA DE FORWARDING
+        int i = 0;
+        for(ArrayList<Integer> row : rt){ //for nod in ipNodo
+            ArrayList<String> rowFT = new ArrayList<String>();
+            rowFT.add(ipNodos.get(i));
+            rowFT.add("none");
+            //agregarlo a la nueva forwarding table
+            newFT.add(rowFT);
+            i++;
+        }
+        
+        //por cada fila de ft
+        //ACTUALIZAR FILA LEYENDO ROUTING
+        ArrayList<ArrayList<String>> updatedFT = new ArrayList<ArrayList<String>>();
+        updatedFT.addAll(newFT);
+        int j = 0;
+        for(ArrayList<String> fila: newFT){
+            //setear el Through recursivamente
+            updatedFT.get(j).set(1, calculateRoute(fila.get(0), rt, ipNodos));
+            j++;
+        }       
+        
+        this.forwardingTable = updatedFT; //setear la nueva tabla
+    }
+    
+    public String calculateRoute(String dest, ArrayList<ArrayList<Integer>> rt, ArrayList<String> ipNodos){
+        //obtener indice de origin
+        int index = ipNodos.indexOf(dest);
+        //obtener la fila del indice
+        ArrayList<Integer> fila = rt.get(index);
+        
+        //verificar el menor de los pesos
+        int menorPeso = 100;
+        ArrayList<String> candidatos = new ArrayList<String>();
+        
+        int i = 0;
+        for(Integer peso : fila){
+            if(peso == menorPeso){ //agregar a candidatos
+                candidatos.add(ipNodos.get(i));
+            }
+            else if(peso < menorPeso){ //resetear candidados y agregar
+                candidatos.clear();
+                candidatos.add(ipNodos.get(i));
+                menorPeso = peso;
+            }            
+            i++;
+        }
+        
+        //Elegir candidato
+        String candidatoElegido = "";
+        if(candidatos.size() == 1){
+            candidatoElegido = candidatos.get(0);
+        }
+        else{
+            //elegir
+            //si algun candidato es vecino preferir ese
+            boolean hayVecino = false;
+            for(String cand : candidatos){
+                if(vecinos.contains(cand)){
+                    //elegir ese
+                    candidatoElegido = cand;
+                    hayVecino = true;
+                    break;
+                }
+            }
+            
+            //si no elegir aleatoriamente
+            Random r = new Random();
+            if(!hayVecino){
+                candidatoElegido = candidatos.get(r.nextInt(candidatos.size()));
+            }            
+        }
+        
+        //Si es un vecino devolverlo
+        if(vecinos.contains(candidatoElegido)){
+            return candidatoElegido;
+        }       
+        
+        //Si no continuar recursivamente con destino = candidato
+        return calculateRoute(candidatoElegido, rt, ipNodos);        
     }
     
     public String queryTable(String ip){              

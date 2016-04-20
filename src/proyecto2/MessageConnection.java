@@ -70,8 +70,8 @@ public class MessageConnection implements Runnable{
             String TO = m.getTo();
             if(TO.equals(localhost)){
                 //guardar mensaje               
-                //UserFrame.messages.add(m);
-                //UserFrame.displayMessage();
+                UserFrame.messages.add(m);
+                UserFrame.displayMessage();
             }
             else{
                 //redirigir
