@@ -5,7 +5,10 @@
  */
 package proyecto2;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,7 +53,7 @@ public class UserFrame extends javax.swing.JFrame {
         jtaDeMensaje = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         tableMessages = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jbEnviar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -116,16 +119,21 @@ public class UserFrame extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        tableMessages.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMessagesMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tableMessages);
         if (tableMessages.getColumnModel().getColumnCount() > 0) {
             tableMessages.getColumnModel().getColumn(0).setResizable(false);
             tableMessages.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jButton1.setText("Enviar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jbEnviar.setText("Enviar");
+        jbEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jbEnviarActionPerformed(evt);
             }
         });
 
@@ -165,7 +173,7 @@ public class UserFrame extends javax.swing.JFrame {
                             .addComponent(jtfPara))
                         .addGap(22, 22, 22))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(196, 196, 196))))
         );
         layout.setVerticalGroup(
@@ -189,7 +197,7 @@ public class UserFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jbEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -216,7 +224,7 @@ public class UserFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfDeActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jbEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEnviarActionPerformed
         // TODO add your handling code here:
         String paraEnviar = jtfPara.getText();
         String mensajeEnviar = jtaParaMensaje.getText();
@@ -230,10 +238,13 @@ public class UserFrame extends javax.swing.JFrame {
         }
         // Se crea un objeto mensaje
         Message enviar = new Message(deEnviar,paraEnviar,mensajeEnviar);
-        //Envio a forwarder
-        //TODO: DESCOMENTAR LINEA DE ABAJO CUANDO YA ESTE EL METODO
-        //forwarder.forwardMessage(enviar);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try {
+            //Envio a forwarder
+            forwarder.forwardMessage(enviar);
+        } catch (IOException ex) {
+            Logger.getLogger(UserFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbEnviarActionPerformed
     
     public static void displayMessage()
     {
@@ -247,8 +258,24 @@ public class UserFrame extends javax.swing.JFrame {
     }
       
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        displayMessage();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tableMessagesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMessagesMouseClicked
+        
+       try{
+           int row = tableMessages.getSelectedRow();
+           String from = (tableMessages.getModel().getValueAt(row, 0).toString());
+           String msg = (tableMessages.getModel().getValueAt(row, 1).toString());
+           System.out.println(from);
+           System.out.println(msg);
+           jtfDe.setText(from);
+           jtaDeMensaje.setText(msg);
+       }
+       catch(Exception e){
+           JOptionPane.showMessageDialog(null, e);
+       } 
+    }//GEN-LAST:event_tableMessagesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -286,7 +313,6 @@ public class UserFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -299,6 +325,7 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton jbEnviar;
     private javax.swing.JTextArea jtaDeMensaje;
     private javax.swing.JTextArea jtaParaMensaje;
     private javax.swing.JTextField jtfDe;
