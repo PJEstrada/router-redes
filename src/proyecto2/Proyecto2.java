@@ -40,6 +40,10 @@ public class Proyecto2 {
         Thread threadListener = new Thread(listener);
         threadListener.start();
         
+        //crear listenerApp y threadApp y correrlo
+        //ListenerApp listenerApp = new ListenerApp(ft);
+        //Thread threadApp = new Thread(listenerApp);
+        //threadApp.start();
         
         JScrollPane scrollPane1 = new JScrollPane(router.tableRouter);
         scrollPane1.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new EtchedBorder()));
