@@ -6,6 +6,8 @@
 package proyecto2;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,8 +18,9 @@ public class UserFrame extends javax.swing.JFrame {
     /**
      * Creates new form UserFrame
      */
-    ArrayList<Message> messages = new ArrayList();
+    public static ArrayList<Message> messages = new ArrayList();
     ForwardingTable forwarder;
+    public static boolean isNewMessage = false;
     public UserFrame() {
         initComponents();
     }
@@ -46,7 +49,7 @@ public class UserFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jtaDeMensaje = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableMessages = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -94,12 +97,12 @@ public class UserFrame extends javax.swing.JFrame {
         jtaDeMensaje.setRows(5);
         jScrollPane2.setViewportView(jtaDeMensaje);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableMessages.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {"192.168.1.1", "Hola Mundo. Como te va?"},
+                {"192.168.1.2", "Dos y dos son cuatro, cuatro y dos son seis, seis y dos son ocho y ocho dieciseis"},
+                {"174.123.1.2", "1+2+26 hehehe resolve eso pues xD"},
+                {"185.254.1.16", "Esto se va a descontrolaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar"}
             },
             new String [] {
                 "Desde", "Mensaje"
@@ -113,10 +116,10 @@ public class UserFrame extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
+        jScrollPane3.setViewportView(tableMessages);
+        if (tableMessages.getColumnModel().getColumnCount() > 0) {
+            tableMessages.getColumnModel().getColumn(0).setResizable(false);
+            tableMessages.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jButton1.setText("Enviar");
@@ -222,7 +225,7 @@ public class UserFrame extends javax.swing.JFrame {
         // Validacion de que el para y desde no sean iguales
         if(paraEnviar.equals(deEnviar))
         {
-            
+            JOptionPane.showMessageDialog(null, "No puedes enviarte mensajes a ti mismo, lo siento D:");
             return;
         }
         // Se crea un objeto mensaje
@@ -231,12 +234,18 @@ public class UserFrame extends javax.swing.JFrame {
         //TODO: DESCOMENTAR LINEA DE ABAJO CUANDO YA ESTE EL METODO
         //forwarder.forwardMessage(enviar);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    public static void displayMessage(Message m)
-    {
-        
-    }
     
+    public static void displayMessage()
+    {
+        DefaultTableModel model = (DefaultTableModel) tableMessages.getModel();
+        model.setRowCount(0);
+        for (Message m: messages)
+        {
+            Object[] objs = {m.from,m.message};
+            model.addRow(objs);
+        }
+    }
+      
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -290,10 +299,10 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jtaDeMensaje;
     private javax.swing.JTextArea jtaParaMensaje;
     private javax.swing.JTextField jtfDe;
     private javax.swing.JTextField jtfPara;
+    private static javax.swing.JTable tableMessages;
     // End of variables declaration//GEN-END:variables
 }
