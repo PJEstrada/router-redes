@@ -6,6 +6,7 @@
 package proyecto2;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,14 +27,18 @@ public class Proyecto2 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         JFrame frameTablas = new JFrame();
 
         ConfigParser config = new ConfigParser();
         //Obtenemos datos de los nodos vecinos
         ArrayList<Node> nodes = config.parseConfigFile();
         ForwardingTable ft = new ForwardingTable();
-        Router router = new Router();
+        Router router = new Router(nodes);
+        //Creamos listener para escuchar puerto 9080 mensajes de nodos vecinos
+        Listener listener = new Listener();
+        Thread threadListener = new Thread(listener);
+        threadListener.start();
         
         
         JScrollPane scrollPane1 = new JScrollPane(router.tableRouter);
@@ -61,7 +66,7 @@ public class Proyecto2 {
             
             
         }
-        }, 0, 5000);
+        }, 0, 5000); //5 segundos
         // 1000 milliseconds in a second * 60 per minute * the MINUTES variable. 1 
         }
     

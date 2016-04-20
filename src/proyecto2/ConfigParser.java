@@ -34,12 +34,20 @@ public class ConfigParser {
                     // printing out each line in the file
                     System.out.println(x);
                     String[] data = x.split(" ");
-                    if(data.length!=2){
+                    if(data.length<2){
                         throw new Exception("Error parsing config file.");
                     }
-                    String id = data[0];
-                    int cost = Integer.parseInt(data[1]);
-                    nodes.add(new Node(id,cost));
+                    else if(data.length==3){
+                        String id = data[0];
+                        int cost = Integer.parseInt(data[1]);
+                        nodes.add(new Node(id,cost));
+                    }
+                    
+                    else if(data.length == 2){
+                        
+                    
+                    }
+
                 } 
             } catch (IOException e) {
                 e.printStackTrace();
