@@ -38,6 +38,7 @@ public class MessageConnection implements Runnable{
         this.input = reader;
         this.output = output;
         sendResponse("9081 Node Mike ROUTER UVG: \n");  
+        System.out.println("Conexion entrante 9081");
     }
     
     public void readRequest() throws IOException{
@@ -64,7 +65,7 @@ public class MessageConnection implements Runnable{
             //Convertir a Message 
             Message m = new Message();
             m.formatToMessage(linea);
-            
+            System.out.println(m.from+" "+m.to+" "+m.message);
             //Verificar destinatario de mensaje
             //Redirigir o guardar mensaje
             String TO = m.getTo();
@@ -81,7 +82,8 @@ public class MessageConnection implements Runnable{
                 }
                 else{
                     //abrir Socket al puerto 9081 de la ip TO
-                    Socket tempSocket = new Socket(TO, 9081);
+                    System.out.println("Forward "+m.from+" to "+TO+" through -> "+redirectTo);
+                    Socket tempSocket = new Socket(redirectTo, 9081);
                     //InputStreamReader input = new InputStreamReader(tempSocket.getInputStream());
                     //BufferedReader reader = new BufferedReader(input);                 
                     DataOutputStream output = new DataOutputStream(tempSocket.getOutputStream());                     

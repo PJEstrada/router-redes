@@ -30,18 +30,18 @@ public class Message {
     public String messageToFormat()
     {
         String mensaje = "";
-        mensaje+="From: "+from+"\n";
-        mensaje+="To: "+to+"\n";
-        mensaje+="Msg: "+message+"\n";
-        mensaje+="EOF";
+        mensaje+="From: "+from;
+        mensaje+="To: "+to;
+        mensaje+="Msg: "+message;
+        mensaje+="EOF\n";
         return mensaje;
     }
     
     
     public void formatToMessage(String m)
     {
-        String toPart = m.substring(0, m.indexOf("To:"));
-        String fromPart =m.substring(m.indexOf("To:"),m.indexOf("Msg:"));
+        String fromPart = m.substring(0, m.indexOf("To:"));
+        String toPart =m.substring(m.indexOf("To:"),m.indexOf("Msg:"));
         String msgPart = m.substring(m.indexOf("Msg:"),m.indexOf("EOF"));
         this.to = toPart;
         this.from = fromPart;

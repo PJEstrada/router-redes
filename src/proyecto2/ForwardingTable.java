@@ -26,11 +26,13 @@ public class ForwardingTable {
     Router router;
     ArrayList<Message> mensajesRecibidos;
     
-    public ForwardingTable(ArrayList<Node> nodes /*, Router router*/){    
+    public ForwardingTable(ArrayList<Node> nodes , Router router){    
         this.nodes = nodes; 
+        this.router = router;
         //guardar nodos vecinos
+        vecinos = new ArrayList<String>();
         for(Node n : nodes){
-            vecinos.add(n.id);
+            vecinos.add(n.ip);
         }
         this.router = new Router(nodes);
         mensajesRecibidos = new ArrayList<Message>();
@@ -58,9 +60,9 @@ public class ForwardingTable {
             //agregar una fila por nodo de la red
             ArrayList<String> row = new ArrayList<String>();
             //nodo de la red
-            row.add(n.id); //DEBE SER LA IP
+            row.add(n.ip); //DEBE SER LA IP
             //interfaz de salida
-            row.add(n.id); //DEBE SER LA IP
+            row.add(n.ip); //DEBE SER LA IP
             this.forwardingTable.add(row);
         }        
         //RECALCULAR
@@ -89,13 +91,14 @@ public class ForwardingTable {
         ArrayList<ArrayList<String>> newFT = new ArrayList<ArrayList<String>>();
         ArrayList<ArrayList<Integer>> rt = router.routingTable;
         ArrayList<String> ipNodos = new ArrayList<String>(); // = router.getIpNodos(); !!!!!!!!!!
-        
+        ipNodos = sortNodeIP(ipNodos);
         //agregar tantas filas como tenga rt
         //INICIALIZAR NUEVA TABLA DE FORWARDING
         int i = 0;
-        for(ArrayList<Integer> row : rt){ //for nod in ipNodo
+        System.out.println("Recalculando Forwarding");
+        for(String nod : ipNodos){ //for nod in ipNodo
             ArrayList<String> rowFT = new ArrayList<String>();
-            rowFT.add(ipNodos.get(i));
+            rowFT.add(nod);
             rowFT.add("none");
             //agregarlo a la nueva forwarding table
             newFT.add(rowFT);
@@ -114,6 +117,25 @@ public class ForwardingTable {
         }       
         
         this.forwardingTable = updatedFT; //setear la nueva tabla
+    }
+    
+    public ArrayList<String> sortNodeIP(ArrayList<String> ipNodos){
+        //ordenar el ipNodo 
+        //en base a los nodos       
+        int sizeNodes = nodes.size();
+        //llenar
+        ArrayList<String> res = new ArrayList<String>();
+        for(int i = 0; i < sizeNodes; i++){
+            res.add("");
+        }
+        
+        //setear
+        int i = 0;        
+        for(Node n : nodes){     
+            System.out.println(n.tableId);
+            res.set(n.tableId, n.ip);           
+        }            
+        return res;
     }
     
     public String calculateRoute(String dest, ArrayList<ArrayList<Integer>> rt, ArrayList<String> ipNodos){

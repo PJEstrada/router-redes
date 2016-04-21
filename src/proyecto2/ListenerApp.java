@@ -19,6 +19,7 @@ public class ListenerApp implements Runnable{
     ForwardingTable ft;
     
     public ListenerApp(ForwardingTable ft) throws IOException{
+        System.out.println("Inicializando Listener App");
         socket  = new ServerSocket(9081);  
         this.ft = ft;
     }
@@ -26,8 +27,7 @@ public class ListenerApp implements Runnable{
     @Override
     public void run() {
         System.out.println("Listener Initialized port: 9081");
-        while(true){
-            
+        while(true){            
             try{
                 //aceptar conexiones al puerto 9081
                 final Socket clientSocket = socket.accept();
@@ -39,9 +39,7 @@ public class ListenerApp implements Runnable{
             }
             catch (Exception e){
                 System.out.println("Error App: "+e.getMessage());
-            }
-            
-       }
-    }
-    
+            }            
+        }
+    }    
 }

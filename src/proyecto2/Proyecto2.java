@@ -34,18 +34,19 @@ public class Proyecto2 {
 
         ConfigParser config = new ConfigParser();
         //Obtenemos datos de los nodos vecinos
-        ArrayList<Node> nodes = config.parseConfigFile();
-        ForwardingTable ft = new ForwardingTable(nodes);
+        ArrayList<Node> nodes = config.parseConfigFile();        
         Router router = new Router(nodes);
+        ForwardingTable ft = new ForwardingTable(nodes, router);
+        
         //Creamos listener para escuchar puerto 9080 mensajes de nodos vecinos
         Listener listener = new Listener(router);
         Thread threadListener = new Thread(listener);
         threadListener.start();
         
-        //crear listenerApp y threadApp y correrlo
-        //ListenerApp listenerApp = new ListenerApp(ft);
-        //Thread threadApp = new Thread(listenerApp);
-        //threadApp.start();
+        //crear listenerApp y threadApp y correrlo en el puerto 9081
+        ListenerApp listenerApp = new ListenerApp(ft);
+        Thread threadApp = new Thread(listenerApp);
+        threadApp.start();
         
         JScrollPane scrollPane1 = new JScrollPane(router.tableRouter);
         scrollPane1.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new EtchedBorder()));
