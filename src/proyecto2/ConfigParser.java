@@ -32,7 +32,7 @@ public class ConfigParser {
                 String x;
                 while ( (x = br.readLine()) != null ) {
                     // printing out each line in the file
-                    System.out.println(x);
+                    //System.out.println(x);
                     String[] data = x.split(" ");
                     if(data.length<2){
                         throw new Exception("Error parsing config file.");

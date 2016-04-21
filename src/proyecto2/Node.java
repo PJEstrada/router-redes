@@ -19,6 +19,9 @@ public class Node {
     public Socket socket;
     public int tableId;
     public String ip;
+    public boolean isUpListener,isUpSender;
+    public NodeConnection listenerConnection;
+    public boolean keepAlive;
     
     public Node(String id, int cost,String ip){
         this.tableId = nodeCounter;
@@ -26,7 +29,9 @@ public class Node {
         this.id = id;
         this.cost = cost;
         this.ip = ip;
-        
+        this.isUpListener = false;
+        this.isUpSender = false;
+        this.keepAlive = false;
     }
     
     
