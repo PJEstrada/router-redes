@@ -68,7 +68,7 @@ public class MessageConnection implements Runnable{
             System.out.println(m.from+" "+m.to+" "+m.message);
             //Verificar destinatario de mensaje
             //Redirigir o guardar mensaje
-            String TO = m.getTo();
+            String TO = m.getTo().trim();
             if(TO.equals(localhost)){
                 //guardar mensaje               
                 UserFrame.messages.add(m);

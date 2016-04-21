@@ -40,7 +40,7 @@ public class Message {
     
     public void formatToMessage(String m)
     {
-        String fromPart = m.substring(0, m.indexOf("To:"));
+        String fromPart = m.substring(5, m.indexOf("To:"));
         String toPart =m.substring(m.indexOf("To:")+3, m.indexOf("Msg:"));
         String msgPart = m.substring(m.indexOf("Msg:")+4, m.indexOf("EOF"));
         this.to = toPart;
