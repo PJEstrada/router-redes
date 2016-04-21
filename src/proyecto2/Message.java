@@ -41,8 +41,8 @@ public class Message {
     public void formatToMessage(String m)
     {
         String fromPart = m.substring(0, m.indexOf("To:"));
-        String toPart =m.substring(m.indexOf("To:"),m.indexOf("Msg:"));
-        String msgPart = m.substring(m.indexOf("Msg:"),m.indexOf("EOF"));
+        String toPart =m.substring(m.indexOf("To:")+3, m.indexOf("Msg:"));
+        String msgPart = m.substring(m.indexOf("Msg:")+4, m.indexOf("EOF"));
         this.to = toPart;
         this.from = fromPart;
         this.message = msgPart;
