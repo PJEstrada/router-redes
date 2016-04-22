@@ -133,12 +133,15 @@ public class Router {
         
         }
         else{
-            System.out.println("Router: Sending Keep Alive ");
+           
             String check = "From:"+Proyecto2.nodeName+"\n" +
                             "Type:KeepAlive\n";
             for(Node n: nodes){
+                //System.out.println("n.isSending="+n.isSending);
+                //System.out.println("n.isUpSender="+n.isUpSender);
                 if(!n.isSending){
                    if(n.isUpSender){
+                       System.out.println("Router: Sending Keep Alive ");
                        Thread threadSender = new Thread(new Sender(n,check,3,this));
                        threadSender.start();
                    }

@@ -33,24 +33,28 @@ public class Sender implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Sender creado:  Type"+type);
         node.isSending = true;
         if(type==1){
+            System.out.println("Seding Hello To: "+node.id);
             //Send Hello
             try {
                 node.socket = new Socket(node.ip,9080);
                 DataOutputStream outToServer = new DataOutputStream(node.socket.getOutputStream()); 
                 BufferedReader inFromServer = new BufferedReader(new InputStreamReader(node.socket.getInputStream()));
                 String response = inFromServer.readLine();
-
+                System.out.println("SENDER: received "+response);
                 //Enviamos mensaje de Hello
                 String helloMessage = message;
                 outToServer.writeBytes(helloMessage);
+                System.out.println("SENDER: writing "+helloMessage);
                 //outToServer.flush();
                 //Recibimos respuesta
                 while(!inFromServer.ready()){
                     ;
                 }
                 String responseLine1 = inFromServer.readLine();
+                System.out.println("RESPONSELINE 1:"+responseLine1);
                 String[] line1Data = responseLine1.split(":");
                 if(line1Data[0].equalsIgnoreCase("From")){
                    if(line1Data.length==2&&line1Data[1].equalsIgnoreCase(node.ip)){
@@ -60,8 +64,10 @@ public class Sender implements Runnable {
                         }
                         String responseLine2 = inFromServer.readLine();         
                         String line2Data[] = responseLine2.split(":");
+                        System.out.println("RESPONSELINE 2:"+responseLine2);
                         if(line2Data.length==2&&line2Data[0].equalsIgnoreCase("Type")){
-                            if(line2Data[0].equalsIgnoreCase("WELCOME")){
+                            if(line2Data[1].equalsIgnoreCase("WELCOME")){
+                                System.out.println("Connection Established with: "+node.id);
                                 node.isUpSender = true;
                                 //Seteamos costos de enlaces directos a nodos vecinos
                                 router.setValue(node.tableId, node.tableId, node.cost);
@@ -159,7 +165,10 @@ public class Sender implements Runnable {
     }
     
     public void closeConnection() throws IOException{
-        node.socket.close();
+        if(node.socket!=null){
+            node.socket.close();
+        }
+
         System.out.println("Sender: Connection Terminated");
         node.isSending = false;
     }

@@ -102,7 +102,7 @@ public class NodeConnection implements Runnable{
                                 n.listenerConnection=this;
                                 n.keepAlive = true;
                                 router.setValue(n.tableId, n.tableId, n.cost);
-                                sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME");
+                                sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
                            }
 
                        }
