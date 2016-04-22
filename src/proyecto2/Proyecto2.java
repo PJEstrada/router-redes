@@ -29,6 +29,7 @@ public class Proyecto2 {
      */
     static int time=0;
     static int timeU=0;
+    static final String  nodeName = "127.0.0.1";
     public static void main(String[] args) throws IOException {
         JFrame frameTablas = new JFrame();
 
@@ -47,6 +48,16 @@ public class Proyecto2 {
         ListenerApp listenerApp = new ListenerApp(ft);
         Thread threadApp = new Thread(listenerApp);
         threadApp.start();
+
+        //Creamos el thread de envio de DV
+        DistanceVectorSender dvSender = new DistanceVectorSender(router);
+        Thread dv = new Thread(dvSender);
+        dv.start();
+        //Creamos el thread de verificacion de keep alive
+        ReconectionChecker rChecker = new ReconectionChecker(router);
+        Thread rc = new Thread(rChecker);
+        rc.start();
+
         
         JScrollPane scrollPane1 = new JScrollPane(router.tableRouter);
         scrollPane1.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new EtchedBorder()));

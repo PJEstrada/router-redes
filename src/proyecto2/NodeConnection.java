@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,6 +54,7 @@ public class NodeConnection implements Runnable{
     public void sendResponse(String s) throws IOException{
         byte[] bytes = s.getBytes();
         output.write(bytes);  
+        System.out.println("SENDER: Response sent: "+s);
         
     
     }
@@ -69,26 +71,78 @@ public class NodeConnection implements Runnable{
                     ;
                 }
                 linea = input.readLine();
-                System.out.println("Linea 1: "+linea);
+                System.out.println("Line 1: "+linea);
                 String[] fromData = linea.split(":");
                 if(fromData.length==2&&fromData[0].equalsIgnoreCase("FROM")){
-                    System.out.println("From Ok.");
+                    //System.out.println("From Ok.");
                     routerName = fromData[1];
                     //Parseamos el tipo del mensaje
                     while(!input.ready()){
                         ;
                     }
                     linea = input.readLine();  
-                    System.out.println("Linea 2: "+linea);
+                    System.out.println("Line 2: "+linea);
                     String[] typeData = linea.split(":");
                     if(typeData.length==2&&typeData[0].equalsIgnoreCase("TYPE")){
                        typeName  = typeData[1]; 
                        if(typeName.equalsIgnoreCase("HELLO")){
-                           
-                       
+                           Node n = router.getNode(routerName);
+                           n.isUpListener = true;
+                           n.listenerConnection=this;
+                           n.keepAlive = true;
+                                       
+                           sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME");
                        }
                        else if(typeName.equalsIgnoreCase("DV")){
+                           
+                           Node n = router.getNode(routerName);
+                           if(n.isUpListener==false){
+                               sendResponse("Bad Request. Say HELLO first.");
+                           }
+                           else{
+                                //Parseamos el numero de lineas
+                               while(!input.ready()){
+                                   ;
+                               }  
+                               linea = input.readLine(); 
+                               String[] numberLines = linea.split(":");
+                               int numLines = Integer.parseInt(numberLines[1]);
+                               ArrayList<String> newDistanceVectors =  new ArrayList<String>();
+                               int i = 0;
+                               while(i<numLines){
+                                    while(!input.ready()){
+                                        ;
+                                    }  
+                                    linea = input.readLine(); 
+                                    String[] dvData = linea.split(":");
+                                    if(dvData.length==2){
+                                        //Verificamos que el costo sea un numero
+                                        String nodeName = dvData[0];
+                                        try{
+                                            int cost = Integer.parseInt(dvData[1]);
+                                            newDistanceVectors.add(linea);
+                                        }
+                                        catch (Exception e ){
+                                            sendResponse("Bad Request.DV value is not a number."); 
+                                        
+                                        }
+                                    }
+                                    else{
+                                       sendResponse("Bad Request. Bad DV data."); 
+                                    }
+
+                                    i++;
+                               }
+                               router.updateTable(newDistanceVectors);
+                               
+                           }
+                           
                        
+                       
+                       }
+                       else if(typeName.equalsIgnoreCase("KeepAlive")){
+                            Node n = router.getNode(routerName);
+                            n.keepAlive=true;
                        
                        }
                     }
@@ -106,9 +160,7 @@ public class NodeConnection implements Runnable{
                 }
                
                 
-                
-                sendResponse("From:<Router que notifica>\n" +
-                            "Type:WELCOME");
+
                 
       
             }
