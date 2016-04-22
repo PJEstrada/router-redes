@@ -67,6 +67,7 @@ public class Sender implements Runnable {
                                 router.setValue(node.tableId, node.tableId, node.cost);
                             }
                             else{
+                                
                                 System.out.println("Sender: Error. Expected WELCOME ");
 
                             }
@@ -82,28 +83,51 @@ public class Sender implements Runnable {
 
                     System.out.println("Sender: Bad Response: "+responseLine1);
                 }
-
-
             } catch (IOException ex) {
                 System.out.println("SENDER: Error Connecting to node. Retry in next cycle...");
+                //Asumimos que el listener vecino murio y cerramos conexion
                 //Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        
+            }     
         }
         else if(type==2){
             //Enviamos DV
               try{
                     DataOutputStream outToServer = new DataOutputStream(node.socket.getOutputStream()); 
                     BufferedReader inFromServer = new BufferedReader(new InputStreamReader(node.socket.getInputStream()));
-                    String response = inFromServer.readLine();               
+   
+                    //Enviamos mensaje de DV
+                    String dv = message;
+                    outToServer.writeBytes(dv);                              
               }
               catch (Exception e){
-
+                    System.out.println("SENDER: Error Connecting to node. Retry in next cycle...");
+                   //Asumimos que el listener vecino murio y cerramos conexion
         
               }
         
+        
+        
         }
+       
+        else if(type == 3){
+            //Enviamos DV
+              try{
+                    DataOutputStream outToServer = new DataOutputStream(node.socket.getOutputStream()); 
+                    BufferedReader inFromServer = new BufferedReader(new InputStreamReader(node.socket.getInputStream()));
+   
+                    //Enviamos mensaje de DV
+                    String dv = message;
+                    outToServer.writeBytes(dv);                              
+              }
+              catch (Exception e){
+                    System.out.println("SENDER: Error Connecting to node. Retry in next cycle...");
+                   //Asumimos que el listener vecino murio y cerramos conexion
+        
+              }
+        
+        
+        }
+        
 
     }
     

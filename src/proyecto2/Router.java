@@ -30,7 +30,7 @@ public class Router {
         Object columnNames1[] = { "Node A", "Node B","Node C"};
         tableRouter = new JTable(nodes.size()+1,nodes.size());
         model = (DefaultTableModel) tableRouter.getModel();
-        
+        model.removeRow(model.getRowCount()-1);
         ArrayList<String> colName = new ArrayList<String>();
         colName.add("Destination");
         for(Node n: nodes){
@@ -62,11 +62,7 @@ public class Router {
         //Seteamos costos de enlaces directos a nodos vecinos
     
     }
-    
-    public void showTable(){
-    
-    
-    }
+
     public void createConnectionsWithNodes(){
         for(Node n: this.nodes){
             String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
@@ -88,6 +84,10 @@ public class Router {
         model.setValueAt(value, i, j+1);
     
     }
+    public int getValue(int i , int j){
+    
+        return this.routingTable.get(i).get(j);
+    }
     
     public Node getNode(String id){
         for(Node n: this.nodes){
@@ -104,13 +104,15 @@ public class Router {
         
         if(!tableUpdates.isEmpty()){
             System.out.println("Router: Sending DV ");
+            String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n";
+            for(String s: this.tableUpdates){
+                message += s+"\n";
+            
+            }
             for(Node n: this.nodes){
-                String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n";
-                
-                
-                
-                Thread threadSender = new Thread(new Sender(n,message,1,this));
+                Thread threadSender = new Thread(new Sender(n,message,2,this));
                 threadSender.start();
+                
             }
             
         
@@ -118,12 +120,47 @@ public class Router {
         else{
             System.out.println("Router: Sending Keep Alive ");
             String check = "From:"+Proyecto2.nodeName+"\n" +
-                            "Type:KeepAlive";
+                            "Type:KeepAlive\n";
             for(Node n: nodes){
-            
+                Thread threadSender = new Thread(new Sender(n,check,3,this));
+                threadSender.start();            
             }
             
         }
+    
+    }
+    
+    public void addNewNode(Node n,Node nodeFrom){
+        ArrayList<Integer> newRow = new ArrayList<Integer>();
+        for(Node n1: this.nodes){
+            newRow.add(99);
+        
+        
+        }
+        this.model.addRow(newRow.toArray());
+        this.setValue(n.tableId, nodeFrom.tableId, n.cost);
+    
+    }
+    
+    public void addNewNeighborNode(Node n){
+        this.nodes.add(n);
+        //Agregamos nueva fila
+        ArrayList<Integer> newRow = new ArrayList<Integer>();
+        for(Node n1: this.nodes){
+            newRow.add(99);
+            
+        }
+        for(ArrayList<Integer> a: this.routingTable ){
+            //Agregamos columnas a cada fila
+            a.add(99);
+        
+        }
+        this.routingTable.add(newRow);
+        //Seteamos el nuevo costo
+        this.setValue(n.tableId, n.tableId, n.cost);
+        
+        this.model.addColumn(n.id);
+        this.model.addRow(newRow.toArray());
     
     }
     
@@ -152,9 +189,29 @@ public class Router {
         
     
     }
-    public void updateTable(ArrayList<String> newDistanceVectors){
+    public void updateTable(ArrayList<String> newDistanceVectors,Node nodeFrom){
         System.out.println("Updating DV Table");
         for(String line: newDistanceVectors){
+            String[] data= line.split(":");
+            Node n = this.getNode(data[0]);
+            if(n==null){
+                int dv = Integer.parseInt(data[1]);
+                dv = dv+nodeFrom.cost;
+                //Agregamos nueva fila a la tabla
+                Node newNode = new Node(data[0],dv,"");
+                this.addNewNode(newNode, nodeFrom);
+            }
+            
+            else{
+                int oldCost = this.getValue(n.tableId,n.tableId);
+                int dv = Integer.parseInt(data[1]);
+                if(oldCost> (dv+nodeFrom.cost)){
+                    this.setValue(n.tableId, nodeFrom.tableId, dv+nodeFrom.cost);
+                    this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);
+                
+                }
+            
+            }
             
         
         

@@ -87,11 +87,24 @@ public class NodeConnection implements Runnable{
                        typeName  = typeData[1]; 
                        if(typeName.equalsIgnoreCase("HELLO")){
                            Node n = router.getNode(routerName);
-                           n.isUpListener = true;
-                           n.listenerConnection=this;
-                           n.keepAlive = true;
-                                       
-                           sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME");
+                           //Si el nodo no existe debemos crear uno nuevo como vecino
+                           if(n==null){
+                               //Costo por default 5
+                               Node newNode = new Node(routerName,5,socket.getRemoteSocketAddress().toString());
+                               this.router.addNewNeighborNode(newNode);
+                               
+                           }
+                           else{
+                                //Verificamos si la conexion no habia sido levantada antes. Si se levanto antes cerramos esta conexion.
+                               
+                               
+                                n.isUpListener = true;
+                                n.listenerConnection=this;
+                                n.keepAlive = true;
+                                router.setValue(n.tableId, n.tableId, n.cost);
+                                sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME");
+                           }
+
                        }
                        else if(typeName.equalsIgnoreCase("DV")){
                            
@@ -133,7 +146,7 @@ public class NodeConnection implements Runnable{
 
                                     i++;
                                }
-                               router.updateTable(newDistanceVectors);
+                               router.updateTable(newDistanceVectors,n);
                                
                            }
                            
@@ -143,7 +156,6 @@ public class NodeConnection implements Runnable{
                        else if(typeName.equalsIgnoreCase("KeepAlive")){
                             Node n = router.getNode(routerName);
                             n.keepAlive=true;
-                       
                        }
                     }
                     else{
