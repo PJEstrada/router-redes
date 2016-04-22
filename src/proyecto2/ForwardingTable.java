@@ -34,7 +34,7 @@ public class ForwardingTable {
         for(Node n : nodes){
             vecinos.add(n.ip);
         }
-        this.router = new Router(nodes);
+        //this.router = new Router(nodes);
         mensajesRecibidos = new ArrayList<Message>();
         
         /*Object rowData[][] = { { "Node A", "Node D"},

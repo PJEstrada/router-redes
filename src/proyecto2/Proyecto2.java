@@ -69,22 +69,9 @@ public class Proyecto2 {
         frameTablas.setSize(800, 800);
         frameTablas.setVisible(true);
         
-       
         
-        float MINUTES = 0.1f; // The delay in minutes
-        Timer timer = new Timer();
-        
-        timer.schedule(new TimerTask() {
-        
-        @Override
-        public void run() { // Function runs every MINUTES minutes.
-         // Run the code you want here
-         
-        
-            
-            
-        }
-        }, 0, 5000); //5 segundos
+        UserFrame frame = new UserFrame(ft);
+        frame.setVisible(true);
         // 1000 milliseconds in a second * 60 per minute * the MINUTES variable. 1 
         }
     

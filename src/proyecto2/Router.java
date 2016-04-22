@@ -167,6 +167,7 @@ public class Router {
     public void checkKeepAlive(){
         System.out.println("ROUTER: checking if nodes are alive...");
         for(Node n: nodes){
+             System.out.println("ROUTER: Node: "+n.ip+" is up.");
             if(n.keepAlive == true){
                 n.keepAlive = false;
             

@@ -71,7 +71,7 @@ public class NodeConnection implements Runnable{
                     ;
                 }
                 linea = input.readLine();
-                System.out.println("Line 1: "+linea);
+                //System.out.println("Line 1: "+linea);
                 String[] fromData = linea.split(":");
                 if(fromData.length==2&&fromData[0].equalsIgnoreCase("FROM")){
                     //System.out.println("From Ok.");
@@ -81,7 +81,7 @@ public class NodeConnection implements Runnable{
                         ;
                     }
                     linea = input.readLine();  
-                    System.out.println("Line 2: "+linea);
+                    //System.out.println("Line 2: "+linea);
                     String[] typeData = linea.split(":");
                     if(typeData.length==2&&typeData[0].equalsIgnoreCase("TYPE")){
                        typeName  = typeData[1]; 
