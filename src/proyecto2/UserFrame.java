@@ -22,9 +22,11 @@ public class UserFrame extends javax.swing.JFrame {
      * Creates new form UserFrame
      */
     public static ArrayList<Message> messages = new ArrayList();
-    ForwardingTable forwarder;
+    static ForwardingTable forwarder;
     public static boolean isNewMessage = false;
-    public UserFrame() {
+    
+    public UserFrame(ForwardingTable forwarder) {
+        this.forwarder = forwarder;
         initComponents();
     }
 
@@ -226,9 +228,10 @@ public class UserFrame extends javax.swing.JFrame {
 
     private void jbEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEnviarActionPerformed
         // TODO add your handling code here:
-        String paraEnviar = jtfPara.getText();
+        String paraEnviarA = jtfPara.getText();
+        String paraEnviar = loadIPfromID(paraEnviarA);
         String mensajeEnviar = jtaParaMensaje.getText();
-        String deEnviar = "HolaQueHace";
+        String deEnviar = Proyecto2.nodeName;
         
         // Validacion de que el para y desde no sean iguales
         if(paraEnviar.equals(deEnviar))
@@ -252,7 +255,7 @@ public class UserFrame extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Message m: messages)
         {
-            Object[] objs = {m.from,m.message};
+            Object[] objs = {loadIDfromIP(m.from),m.message};
             model.addRow(objs);
         }
     }
@@ -277,10 +280,35 @@ public class UserFrame extends javax.swing.JFrame {
        } 
     }//GEN-LAST:event_tableMessagesMouseClicked
 
+    private static String loadIDfromIP(String ip)
+    {
+        String resultado = "";
+        for(Node n : forwarder.nodes)
+        {
+            if(n.ip.equals(ip))
+            {
+                return n.id;
+            }
+        }
+        return resultado;
+    }
+    
+    private String loadIPfromID(String id)
+    {
+        String resultado = "";
+        for(Node n : forwarder.nodes)
+        {
+            if(n.id.equals(id))
+            {
+                return n.id;
+            }
+        }
+        return resultado;
+    }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    /*public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -305,12 +333,12 @@ public class UserFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new UserFrame().setVisible(true);
             }
         });
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
