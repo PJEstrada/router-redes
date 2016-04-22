@@ -21,7 +21,7 @@ public class MessageConnection implements Runnable{
     Socket socket;
     BufferedReader input;
     DataOutputStream output;
-    String localhost = "192.168.0.7";
+    //String localhost = "192.168.0.7";
     ForwardingTable ft; //Tabla de forwarding para hacer lookups
     
     public MessageConnection(Socket clientSocket, ForwardingTable ft) throws IOException{
@@ -69,7 +69,7 @@ public class MessageConnection implements Runnable{
             //Verificar destinatario de mensaje
             //Redirigir o guardar mensaje
             String TO = m.getTo().trim();
-            if(TO.equals(localhost)){
+            if(TO.equals(Proyecto2.nodeName)){
                 //guardar mensaje               
                 UserFrame.messages.add(m);
                 UserFrame.displayMessage();

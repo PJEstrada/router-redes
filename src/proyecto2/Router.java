@@ -65,17 +65,23 @@ public class Router {
 
     public void createConnectionsWithNodes(){
         for(Node n: this.nodes){
-            String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
-            Thread threadSender = new Thread(new Sender(n,hello,1,this));
-            threadSender.start();
+            if(!n.isSending){
+                String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
+                Thread threadSender = new Thread(new Sender(n,hello,1,this));
+                threadSender.start();           
+            }
         }
     
     }
     
     public void createConnectionWithNode(Node n){
+        if(!n.isSending){
             String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
             Thread threadSender = new Thread(new Sender(n,hello,1,this));
-            threadSender.start();
+            threadSender.start();       
+        
+        }
+
     }
     
     public void setValue(int i, int j, int value){
@@ -110,8 +116,17 @@ public class Router {
             
             }
             for(Node n: this.nodes){
-                Thread threadSender = new Thread(new Sender(n,message,2,this));
-                threadSender.start();
+                if(!n.isSending){
+                    if(n.isUpSender){
+                        Thread threadSender = new Thread(new Sender(n,message,2,this));
+                        threadSender.start();             
+                    }
+                    else{
+                        this.createConnectionWithNode(n);
+                    }
+              
+                
+                }
                 
             }
             
@@ -122,8 +137,17 @@ public class Router {
             String check = "From:"+Proyecto2.nodeName+"\n" +
                             "Type:KeepAlive\n";
             for(Node n: nodes){
-                Thread threadSender = new Thread(new Sender(n,check,3,this));
-                threadSender.start();            
+                if(!n.isSending){
+                   if(n.isUpSender){
+                       Thread threadSender = new Thread(new Sender(n,check,3,this));
+                       threadSender.start();
+                   }
+                   else{
+                       this.createConnectionWithNode(n);
+                   }               
+                }
+
+            
             }
             
         }
@@ -167,8 +191,9 @@ public class Router {
     public void checkKeepAlive(){
         System.out.println("ROUTER: checking if nodes are alive...");
         for(Node n: nodes){
-             System.out.println("ROUTER: Node: "+n.ip+" is up.");
+            
             if(n.keepAlive == true){
+                System.out.println("ROUTER: Node: "+n.ip+" is up.");
                 n.keepAlive = false;
             
             }
@@ -176,7 +201,10 @@ public class Router {
                 System.out.println("ROUTER: Node: "+n.ip+" dead. Closing socket...");
                 try {
                     //Cerramos el socket del nodo conectado
-                    n.socket.close();
+                    if(n.socket!=null){
+                         n.socket.close();
+                    }
+                   
                 } catch (IOException ex) {
                     Logger.getLogger(Router.class.getName()).log(Level.SEVERE, null, ex);
                 }

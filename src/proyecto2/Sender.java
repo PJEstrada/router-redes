@@ -33,7 +33,7 @@ public class Sender implements Runnable {
 
     @Override
     public void run() {
-        
+        node.isSending = true;
         if(type==1){
             //Send Hello
             try {
@@ -83,10 +83,19 @@ public class Sender implements Runnable {
 
                     System.out.println("Sender: Bad Response: "+responseLine1);
                 }
-            } catch (IOException ex) {
+            } catch (IOException e) {
                 System.out.println("SENDER: Error Connecting to node. Retry in next cycle...");
                 //Asumimos que el listener vecino murio y cerramos conexion
                 //Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
+                e.printStackTrace();
+                node.isUpSender = false;
+                router.setValue(node.tableId, node.tableId, 99);
+                node.isSending = false;
+                try {
+                    closeConnection();
+                } catch (IOException ex) {
+                    Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
+                }                
             }     
         }
         else if(type==2){
@@ -102,7 +111,15 @@ public class Sender implements Runnable {
               catch (Exception e){
                     System.out.println("SENDER: Error Connecting to node. Retry in next cycle...");
                    //Asumimos que el listener vecino murio y cerramos conexion
-        
+                    e.printStackTrace();
+                    node.isUpSender = false;
+                    router.setValue(node.tableId, node.tableId, 99);
+                    node.isSending = false;
+                    try {
+                        closeConnection();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
+                    }
               }
         
         
@@ -121,12 +138,22 @@ public class Sender implements Runnable {
               }
               catch (Exception e){
                     System.out.println("SENDER: Error Connecting to node. Retry in next cycle...");
+                    e.printStackTrace();
                    //Asumimos que el listener vecino murio y cerramos conexion
-        
+                    e.printStackTrace();
+                    node.isUpSender = false;
+                    router.setValue(node.tableId, node.tableId, 99);                    
+                    node.isSending = false;
+                    try {
+                        closeConnection();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
+                    }
               }
         
         
         }
+        node.isSending = false;
         
 
     }
@@ -134,6 +161,7 @@ public class Sender implements Runnable {
     public void closeConnection() throws IOException{
         node.socket.close();
         System.out.println("Sender: Connection Terminated");
+        node.isSending = false;
     }
     
     

@@ -22,6 +22,7 @@ public class Node {
     public boolean isUpListener,isUpSender;
     public NodeConnection listenerConnection;
     public boolean keepAlive;
+    public boolean isSending;
     
     public Node(String id, int cost,String ip){
         this.tableId = nodeCounter;
@@ -32,6 +33,7 @@ public class Node {
         this.isUpListener = false;
         this.isUpSender = false;
         this.keepAlive = false;
+        this.isSending = false;
     }
     
     
