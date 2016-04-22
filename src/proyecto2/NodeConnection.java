@@ -55,7 +55,7 @@ public class NodeConnection implements Runnable{
         byte[] bytes = s.getBytes();
         output.write(bytes);  
         System.out.println("SENDER: Response sent: "+s);
-        
+        //
     
     }
     
