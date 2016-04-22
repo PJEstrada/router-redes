@@ -1,1 +1,4 @@
 *.class
+build/built-jar.properties
+dist/Proyecto2.jar
+dist/README.TXT
