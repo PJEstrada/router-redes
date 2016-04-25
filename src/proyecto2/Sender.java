@@ -67,7 +67,7 @@ public class Sender implements Runnable {
                         System.out.println("RESPONSELINE 2:"+responseLine2);
                         if(line2Data.length==2&&line2Data[0].equalsIgnoreCase("Type")){
                             if(line2Data[1].equalsIgnoreCase("WELCOME")){
-                                System.out.println("Connection Established with: "+node.id);
+                                System.out.println("SENDER: Connection Established with: "+node.id);
                                 node.isUpSender = true;
                                 //Seteamos costos de enlaces directos a nodos vecinos
                                 router.setValue(node.tableId, node.tableId, node.cost);

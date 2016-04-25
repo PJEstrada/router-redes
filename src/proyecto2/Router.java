@@ -232,6 +232,7 @@ public class Router {
                 //Agregamos nueva fila a la tabla
                 Node newNode = new Node(data[0],dv,"");
                 this.addNewNode(newNode, nodeFrom);
+                this.tableUpdates.add(newNode.id+":"+newNode.cost);
             }
             
             else{
