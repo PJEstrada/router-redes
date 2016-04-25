@@ -131,6 +131,9 @@ public class Router {
               
                 
                 }
+                else{
+                    System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
+                }
                 
             }
             
@@ -169,6 +172,7 @@ public class Router {
         
         }
         this.model.addRow(newRow.toArray());
+        this.routingTable.add(newRow);
         this.setValue(n.tableId, nodeFrom.tableId, n.cost);
     
     }
@@ -239,7 +243,7 @@ public class Router {
                 //Agregamos nueva fila a la tabla
                 Node newNode = new Node(data[0],dv,"");
                 this.addNewNode(newNode, nodeFrom);
-                this.tableUpdates.add(newNode.id+":"+newNode.cost);
+                this.tableUpdates.add(newNode.ip+":"+newNode.cost);  //Cambio tambien en NodeConecction al recibir HELLO
             }
             
             else{
@@ -247,7 +251,7 @@ public class Router {
                 int dv = Integer.parseInt(data[1]);
                 if(oldCost> (dv+nodeFrom.cost)){
                     this.setValue(n.tableId, nodeFrom.tableId, dv+nodeFrom.cost);
-                    this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);
+                    this.tableUpdates.add(n.ip+":"+dv+nodeFrom.cost);
                 
                 }
             

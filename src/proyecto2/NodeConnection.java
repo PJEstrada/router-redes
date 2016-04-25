@@ -102,7 +102,7 @@ public class NodeConnection implements Runnable{
                                 n.listenerConnection=this;
                                 n.keepAlive = true;
                                 router.setValue(n.tableId, n.tableId, n.cost);
-                                router.tableUpdates.add(n.id+":"+n.cost);
+                                router.tableUpdates.add(n.ip+":"+n.cost);
                                 sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
                                 
                            }
@@ -134,7 +134,7 @@ public class NodeConnection implements Runnable{
                                         ;
                                     }  
                                     linea = input.readLine(); 
-                                    System.out.println("LISTENER: DV- "+linea);
+                                    System.out.println("LISTENER: DV- "+i+" - -"+linea);
                                     String[] dvData = linea.split(":");
                                     if(dvData.length==2){
                                         //Verificamos que el costo sea un numero

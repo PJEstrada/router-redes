@@ -54,7 +54,7 @@ public class Sender implements Runnable {
                     ;
                 }
                 String responseLine1 = inFromServer.readLine();
-                System.out.println("RESPONSELINE 1:"+responseLine1);
+                System.out.println("SENDER: RESPONSELINE 1:"+responseLine1);
                 String[] line1Data = responseLine1.split(":");
                 if(line1Data[0].equalsIgnoreCase("From")){
                    if(line1Data.length==2&&line1Data[1].equalsIgnoreCase(node.ip)){
@@ -64,7 +64,7 @@ public class Sender implements Runnable {
                         }
                         String responseLine2 = inFromServer.readLine();         
                         String line2Data[] = responseLine2.split(":");
-                        System.out.println("RESPONSELINE 2:"+responseLine2);
+                        System.out.println("SENDER: RESPONSELINE 2:"+responseLine2);
                         if(line2Data.length==2&&line2Data[0].equalsIgnoreCase("Type")){
                             if(line2Data[1].equalsIgnoreCase("WELCOME")){
                                 System.out.println("SENDER: Connection Established with: "+node.id);
@@ -112,7 +112,8 @@ public class Sender implements Runnable {
    
                     //Enviamos mensaje de DV
                     String dv = message;
-                    outToServer.writeBytes(dv);                              
+                    outToServer.writeBytes(dv);   
+                    router.tableUpdates.clear(); 
               }
               catch (Exception e){
                     System.out.println("SENDER: Error Connecting to node. Retry in next cycle...");
@@ -121,7 +122,7 @@ public class Sender implements Runnable {
                     node.isUpSender = false;
                     router.setValue(node.tableId, node.tableId, 99);
                     node.isSending = false;
-                    router.tableUpdates.clear(); 
+                    
                    try {
                         closeConnection();
                     } catch (IOException ex) {
