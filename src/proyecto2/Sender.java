@@ -121,11 +121,13 @@ public class Sender implements Runnable {
                     node.isUpSender = false;
                     router.setValue(node.tableId, node.tableId, 99);
                     node.isSending = false;
-                    try {
+                    router.tableUpdates.clear(); 
+                   try {
                         closeConnection();
                     } catch (IOException ex) {
                         Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    
               }
         
         

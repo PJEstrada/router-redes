@@ -66,6 +66,7 @@ public class Router {
     public void createConnectionsWithNodes(){
         for(Node n: this.nodes){
             if(!n.isSending){
+                System.out.println("ROUTER: Creating connection with node: "+n.id);
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
                 Thread threadSender = new Thread(new Sender(n,hello,1,this));
                 threadSender.start();           
@@ -75,6 +76,7 @@ public class Router {
     }
     
     public void createConnectionWithNode(Node n){
+        System.out.println("ROUTER: Creating connection with node: "+n.id);
         if(!n.isSending){
             String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
             Thread threadSender = new Thread(new Sender(n,hello,1,this));
@@ -97,11 +99,12 @@ public class Router {
     
     public Node getNode(String id){
         for(Node n: this.nodes){
-            if(n.id.equals(id)||n.ip.equals(id)){
+            if(n.id.equalsIgnoreCase(id)||n.ip.equalsIgnoreCase(id)){
                 return n;
             }
         
         }
+
         return null;
     }
     
@@ -110,7 +113,7 @@ public class Router {
         
         if(!tableUpdates.isEmpty()){
             System.out.println("Router: Sending DV ");
-            String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n";
+            String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n"+"Len:"+this.tableUpdates.size()+"\n";
             for(String s: this.tableUpdates){
                 message += s+"\n";
             
@@ -118,6 +121,7 @@ public class Router {
             for(Node n: this.nodes){
                 if(!n.isSending){
                     if(n.isUpSender){
+                        System.out.println("ROUTER: DV Message to send:"+message);
                         Thread threadSender = new Thread(new Sender(n,message,2,this));
                         threadSender.start();             
                     }
@@ -226,6 +230,9 @@ public class Router {
         for(String line: newDistanceVectors){
             String[] data= line.split(":");
             Node n = this.getNode(data[0]);
+            if(data[0].equalsIgnoreCase(Proyecto2.nodeName)){
+                continue;  //Si el nodo soy yo. Lo salto.
+            }
             if(n==null){
                 int dv = Integer.parseInt(data[1]);
                 dv = dv+nodeFrom.cost;

@@ -90,7 +90,7 @@ public class NodeConnection implements Runnable{
                            //Si el nodo no existe debemos crear uno nuevo como vecino
                            if(n==null){
                                //Costo por default 5
-                               Node newNode = new Node(routerName,5,socket.getRemoteSocketAddress().toString());
+                               Node newNode = new Node(routerName,5,routerName);
                                this.router.addNewNeighborNode(newNode);
                                
                            }
@@ -115,12 +115,17 @@ public class NodeConnection implements Runnable{
                                sendResponse("Bad Request. Say HELLO first.");
                            }
                            else{
+                                   
                                 //Parseamos el numero de lineas
                                while(!input.ready()){
                                    ;
                                }  
                                linea = input.readLine(); 
+                               System.out.println("LISTENER: DV- "+linea);
                                String[] numberLines = linea.split(":");
+                               if(!numberLines[0].equalsIgnoreCase("LEN")){
+                                   System.out.println("LISTENER: Error. Expected Len:<lines>. Got: "+linea);
+                               }
                                int numLines = Integer.parseInt(numberLines[1]);
                                ArrayList<String> newDistanceVectors =  new ArrayList<String>();
                                int i = 0;
@@ -129,6 +134,7 @@ public class NodeConnection implements Runnable{
                                         ;
                                     }  
                                     linea = input.readLine(); 
+                                    System.out.println("LISTENER: DV- "+linea);
                                     String[] dvData = linea.split(":");
                                     if(dvData.length==2){
                                         //Verificamos que el costo sea un numero
