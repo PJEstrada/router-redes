@@ -29,7 +29,7 @@ public class Proyecto2 {
      */
     static int time=0;
     static int timeU=0;
-    static final String  nodeName = "172.20.2.97";
+    static final String  nodeName = "172.20.9.84";
     public static void main(String[] args) throws IOException {
         JFrame frameTablas = new JFrame();
 
