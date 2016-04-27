@@ -92,12 +92,15 @@ public class NodeConnection implements Runnable{
                                //Costo por default 5
                                Node newNode = new Node(routerName,5,routerName);
                                this.router.addNewNeighborNode(newNode);
+                               newNode.isUpListener = true;
+                               newNode.listenerConnection=this;
+                               newNode.keepAlive = true;
+                               sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
+                               router.sendInitialDV(newNode);
                                
                            }
                            else{
                                 //Verificamos si la conexion no habia sido levantada antes. Si se levanto antes cerramos esta conexion.
-                               
-                               
                                 n.isUpListener = true;
                                 n.listenerConnection=this;
                                 n.keepAlive = true;

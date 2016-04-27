@@ -86,6 +86,72 @@ public class Router {
 
     }
     
+    public int min(ArrayList<Integer> arr){
+        int min = 99;
+        for(int n:arr){
+            if(n<min){
+                min =n;
+            }
+        }
+        return min;
+    }
+    
+    public Node getNodeByTableId(int id){
+        for(Node n: this.nodes){
+            if(n.tableId==id){
+                return n;
+            }
+        
+        
+        }
+        return null;
+    }
+    public ArrayList<String> constructDVMessage(){
+        ArrayList<String> result = new ArrayList<String>();
+        int i = 0;
+        for(ArrayList<Integer> row: this.routingTable){
+            int num = min(row);
+            if(num != 99){
+                Node n = this.getNodeByTableId(i);
+                String msg =  n.ip+","+num;
+                result.add(msg);
+            
+            }
+            i++;
+        }
+        return result;
+    }
+    
+    public void sendInitialDV(Node node){
+            ArrayList<String> updates = constructDVMessage();
+            System.out.println("Router: Sending Initial DV to Node: "+node.ip);
+            String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n"+"Len:"+updates.size()+"\n";
+            for(String s: updates){
+                message += s+"\n";
+            
+            }
+           
+            if(!node.isSending){
+                if(node.isUpSender){
+                    System.out.println("ROUTER: DV Message to send:"+message);
+                    Thread threadSender = new Thread(new Sender(node,message,2,this));
+                    threadSender.start();             
+                }
+                else{
+                    this.createConnectionWithNode(node);
+                }
+
+
+            }
+            else{
+                System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
+            }
+
+            
+               
+    
+    
+    }
     public void setValue(int i, int j, int value){
         
         this.routingTable.get(i).set(j, value);
