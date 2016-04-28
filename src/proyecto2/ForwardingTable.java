@@ -219,10 +219,11 @@ public class ForwardingTable {
         //Obtener de la tabla la ip correspondiente a 
         //el nodo n ingresado        
         //debe ser la IP
+        Node n = router.getNode(ip);
         for(ArrayList<String> row : forwardingTable){
             //por cada fila de la tabla de forwarding
             //revisar sea el destino
-            if(row.get(0).equals(ip)){
+            if(row.get(0).equals(n.id)){
                 return row.get(1); //regresar la ip
             }
         }

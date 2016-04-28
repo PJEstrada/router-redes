@@ -230,6 +230,7 @@ public class UserFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String paraEnviarA = jtfPara.getText();
         String paraEnviar = loadIPfromID(paraEnviarA);
+        System.out.println("ParaEnviar: "+paraEnviar);
         String mensajeEnviar = jtaParaMensaje.getText();
         String deEnviar = Proyecto2.nodeName;
         
@@ -285,7 +286,7 @@ public class UserFrame extends javax.swing.JFrame {
         String resultado = "";
         for(Node n : forwarder.nodes)
         {
-            if(n.ip.equals(ip))
+            if(n.ip.equalsIgnoreCase(ip))
             {
                 return n.id;
             }
@@ -298,7 +299,7 @@ public class UserFrame extends javax.swing.JFrame {
         String resultado = "";
         for(Node n : forwarder.nodes)
         {
-            if(n.id.equals(id))
+            if(n.id.equalsIgnoreCase(id))
             {
                 return n.ip;
             }

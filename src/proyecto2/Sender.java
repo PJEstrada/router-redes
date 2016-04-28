@@ -57,7 +57,7 @@ public class Sender implements Runnable {
                 System.out.println("SENDER("+node.id+") RESPONSELINE 1:"+responseLine1);
                 String[] line1Data = responseLine1.split(":");
                 if(line1Data[0].equalsIgnoreCase("From")){
-                   if(line1Data.length==2&&line1Data[1].equalsIgnoreCase(node.ip)){
+                   if(line1Data.length==2&&line1Data[1].equalsIgnoreCase(node.id)){
                         //Leemos el tipo para verificar que sea Welcome
                         while(!inFromServer.ready()){
                             ;
