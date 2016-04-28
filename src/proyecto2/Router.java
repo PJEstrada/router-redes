@@ -214,7 +214,7 @@ public class Router {
                 //System.out.println("n.isUpSender="+n.isUpSender);
                 if(!n.isSending){
                    if(n.isUpSender){
-                       System.out.println("Router: Sending Keep Alive ");
+                       System.out.println("Router: Sending Keep Alive to: "+n.ip);
                        Thread threadSender = new Thread(new Sender(n,check,3,this));
                        threadSender.start();
                    }
@@ -266,9 +266,9 @@ public class Router {
     }
     
     public void checkKeepAlive(){
-        System.out.println("ROUTER: checking if nodes are alive...");
+        
         for(Node n: nodes){
-            
+            System.out.println("ROUTER: checking if "+n.ip+" is alive...");
             if(n.keepAlive == true){
                 System.out.println("ROUTER: Node: "+n.ip+" is up.");
                 n.keepAlive = false;
@@ -286,7 +286,7 @@ public class Router {
                     Logger.getLogger(Router.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //Seteamos el costo de enlace directo a 99
-                this.setValue(n.tableId, n.tableId, n.cost);
+                this.setValue(n.tableId, n.tableId, 99);
                 n.isUpListener = false;
                 n.isUpSender = false;
             }
@@ -307,7 +307,7 @@ public class Router {
                 int dv = Integer.parseInt(data[1]);
                 dv = dv+nodeFrom.cost;
                 //Agregamos nueva fila a la tabla
-                Node newNode = new Node(data[0],dv,"");
+                Node newNode = new Node(data[0],dv,data[0]);
                 this.addNewNode(newNode, nodeFrom);
                 this.tableUpdates.add(newNode.ip+":"+newNode.cost);  //Cambio tambien en NodeConecction al recibir HELLO
             }

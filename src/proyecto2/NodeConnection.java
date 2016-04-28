@@ -54,7 +54,7 @@ public class NodeConnection implements Runnable{
     public void sendResponse(String s) throws IOException{
         byte[] bytes = s.getBytes();
         output.write(bytes);  
-        System.out.println("SENDER: Response sent: "+s);
+        System.out.println("LISTENER: Response sent: "+s);
         //
     
     }
@@ -90,6 +90,7 @@ public class NodeConnection implements Runnable{
                            //Si el nodo no existe debemos crear uno nuevo como vecino
                            if(n==null){
                                //Costo por default 5
+                               
                                Node newNode = new Node(routerName,5,routerName);
                                this.router.addNewNeighborNode(newNode);
                                newNode.isUpListener = true;
@@ -97,7 +98,7 @@ public class NodeConnection implements Runnable{
                                newNode.keepAlive = true;
                                sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
                                router.sendInitialDV(newNode);
-                               
+                               System.out.println("LISTENER: Received HELLO From: "+newNode.ip);
                            }
                            else{
                                 //Verificamos si la conexion no habia sido levantada antes. Si se levanto antes cerramos esta conexion.
@@ -107,8 +108,10 @@ public class NodeConnection implements Runnable{
                                 router.setValue(n.tableId, n.tableId, n.cost);
                                 router.tableUpdates.add(n.ip+":"+n.cost);
                                 sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
+                                System.out.println("LISTENER: Received HELLO From: "+n.id);
                                 
                            }
+                           
 
                        }
                        else if(typeName.equalsIgnoreCase("DV")){
@@ -124,10 +127,10 @@ public class NodeConnection implements Runnable{
                                    ;
                                }  
                                linea = input.readLine(); 
-                               System.out.println("LISTENER: DV- "+linea);
+                               System.out.println("LISTENER("+n.ip+"): DV- "+linea);
                                String[] numberLines = linea.split(":");
                                if(!numberLines[0].equalsIgnoreCase("LEN")){
-                                   System.out.println("LISTENER: Error. Expected Len:<lines>. Got: "+linea);
+                                   System.out.println("LISTENER("+n.ip+"): Error. Expected Len:<lines>. Got: "+linea);
                                }
                                int numLines = Integer.parseInt(numberLines[1]);
                                ArrayList<String> newDistanceVectors =  new ArrayList<String>();
@@ -137,7 +140,7 @@ public class NodeConnection implements Runnable{
                                         ;
                                     }  
                                     linea = input.readLine(); 
-                                    System.out.println("LISTENER: DV- "+i+" - -"+linea);
+                                    System.out.println("LISTENER("+n.ip+"): DV- "+i+" - -"+linea);
                                     String[] dvData = linea.split(":");
                                     if(dvData.length==2){
                                         //Verificamos que el costo sea un numero
@@ -147,12 +150,12 @@ public class NodeConnection implements Runnable{
                                             newDistanceVectors.add(linea);
                                         }
                                         catch (Exception e ){
-                                            sendResponse("Bad Request.DV value is not a number."); 
+                                            sendResponse("LISTENER("+n.ip+"): Bad Request.DV value is not a number."); 
                                         
                                         }
                                     }
                                     else{
-                                       sendResponse("Bad Request. Bad DV data."); 
+                                       sendResponse("LISTENER("+n.ip+"): Bad Request. Bad DV data."); 
                                     }
 
                                     i++;
@@ -170,7 +173,7 @@ public class NodeConnection implements Runnable{
                        }
                     }
                     else{
-                        sendResponse("Bad Request.");
+                        sendResponse("LISTENER(): Bad Request.");
                     }
                    
                     
@@ -179,7 +182,7 @@ public class NodeConnection implements Runnable{
                     
                 }
                 else{
-                    sendResponse("Bad Request.");
+                    sendResponse("LISTENER():Bad Request.");
                 }
                
                 
