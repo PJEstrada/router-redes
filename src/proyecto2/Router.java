@@ -232,12 +232,16 @@ public class Router {
     
     public void addNewNode(Node n,Node nodeFrom){
         ArrayList<Integer> newRow = new ArrayList<Integer>();
+        newRow.add(99);
         for(Node n1: this.nodes){
             newRow.add(99);
         
         
         }
+        //Seteamos el header de la fila
+        this.model.setValueAt(n.ip,n.tableId,0);
         this.model.addRow(newRow.toArray());
+        newRow.remove(newRow.size()-1);
         this.routingTable.add(newRow);
         this.setValue(n.tableId, nodeFrom.tableId, n.cost);
     
@@ -304,6 +308,7 @@ public class Router {
                 continue;  //Si el nodo soy yo. Lo salto.
             }
             if(n==null){
+                System.out.println("New Node Created: "+data[0]);
                 int dv = Integer.parseInt(data[1]);
                 dv = dv+nodeFrom.cost;
                 //Agregamos nueva fila a la tabla
@@ -313,6 +318,7 @@ public class Router {
             }
             
             else{
+                System.out.println("Updating cost in col: "+nodeFrom.ip+" Row:"+n.ip);
                 int oldCost = this.getValue(n.tableId,n.tableId);
                 int dv = Integer.parseInt(data[1]);
                 if(oldCost> (dv+nodeFrom.cost)){
