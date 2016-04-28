@@ -25,6 +25,7 @@ public class ForwardingTable {
     ArrayList<ArrayList<String>> forwardingTable;
     Router router;
     ArrayList<Message> mensajesRecibidos;
+    DefaultTableModel model;
     
     public ForwardingTable(ArrayList<Node> nodes , Router router){    
         this.nodes = nodes; 
@@ -42,7 +43,7 @@ public class ForwardingTable {
         Object columnNames[] = { "Destino", "A Traves De"};*/        
         
         tabla = new JTable(1, 2);
-        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        model = (DefaultTableModel) tabla.getModel();
         
         ArrayList<String> columnName = new ArrayList<String>();
         columnName.add("Destination");
@@ -60,11 +61,11 @@ public class ForwardingTable {
             //agregar una fila por nodo de la red
             ArrayList<String> row = new ArrayList<String>();
             //nodo de la red
-            row.add(n.ip); //DEBE SER LA IP
+            row.add(n.id); //DEBE SER LA IP
             //interfaz de salida
-            row.add(n.ip); //DEBE SER LA IP
-            this.forwardingTable.add(row);
-        }        
+            row.add(n.id); //DEBE SER LA IP
+            model.addRow(row.toArray());
+        }     
         //RECALCULAR
         recalculateTable();       
         
@@ -116,7 +117,26 @@ public class ForwardingTable {
             j++;
         }       
         
+        
+        
         this.forwardingTable = updatedFT; //setear la nueva tabla
+        i = 0;
+        model = new DefaultTableModel();
+        for(Node n: nodes){
+            
+            //agregar una fila por nodo de la red
+            ArrayList<String> row = new ArrayList<String>();
+            //nodo de la red
+            Node node = router.getNode(this.forwardingTable.get(i).get(0));
+            row.add(node.id); //DEBE SER LA IP
+           // model.setValueAt(node.id, i, 0);
+            //interfaz de salida
+            node = router.getNode(this.forwardingTable.get(i).get(1));
+            //model.setValueAt(node.id, i, 1);
+            row.add(node.id); //DEBE SER LA IP
+            model.addRow(row.toArray());
+            i++;
+        }           
     }
     
     public ArrayList<String> sortNodeIP(ArrayList<String> ipNodos){
@@ -171,7 +191,7 @@ public class ForwardingTable {
             //si algun candidato es vecino preferir ese
             boolean hayVecino = false;
             for(String cand : candidatos){
-                if(vecinos.contains(cand)){
+                if(router.getVecinos().contains(cand)){
                     //elegir ese
                     candidatoElegido = cand;
                     hayVecino = true;
@@ -187,7 +207,7 @@ public class ForwardingTable {
         }
         
         //Si es un vecino devolverlo
-        if(vecinos.contains(candidatoElegido)){
+        if(router.getVecinos().contains(candidatoElegido)){
             return candidatoElegido;
         }       
         

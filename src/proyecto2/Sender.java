@@ -43,18 +43,18 @@ public class Sender implements Runnable {
                 DataOutputStream outToServer = new DataOutputStream(node.socket.getOutputStream()); 
                 BufferedReader inFromServer = new BufferedReader(new InputStreamReader(node.socket.getInputStream()));
                 String response = inFromServer.readLine();
-                System.out.println("SENDER("+node.ip+"): received "+response);
+                System.out.println("SENDER("+node.id+"): received "+response);
                 //Enviamos mensaje de Hello
                 String helloMessage = message;
                 outToServer.writeBytes(helloMessage);
-                System.out.println("SENDER("+node.ip+") writing "+helloMessage);
+                System.out.println("SENDER("+node.id+") writing "+helloMessage);
                 //outToServer.flush();
                 //Recibimos respuesta
                 while(!inFromServer.ready()){
                     ;
                 }
                 String responseLine1 = inFromServer.readLine();
-                System.out.println("SENDER("+node.ip+") RESPONSELINE 1:"+responseLine1);
+                System.out.println("SENDER("+node.id+") RESPONSELINE 1:"+responseLine1);
                 String[] line1Data = responseLine1.split(":");
                 if(line1Data[0].equalsIgnoreCase("From")){
                    if(line1Data.length==2&&line1Data[1].equalsIgnoreCase(node.ip)){
@@ -64,33 +64,33 @@ public class Sender implements Runnable {
                         }
                         String responseLine2 = inFromServer.readLine();         
                         String line2Data[] = responseLine2.split(":");
-                        System.out.println("SENDER("+node.ip+") RESPONSELINE 2:"+responseLine2);
+                        System.out.println("SENDER("+node.id+") RESPONSELINE 2:"+responseLine2);
                         if(line2Data.length==2&&line2Data[0].equalsIgnoreCase("Type")){
                             if(line2Data[1].equalsIgnoreCase("WELCOME")){
-                                System.out.println("SENDER("+node.ip+")  Connection Established with: "+node.id);
+                                System.out.println("SENDER("+node.id+")  Connection Established with: "+node.id);
                                 node.isUpSender = true;
                                 //Seteamos costos de enlaces directos a nodos vecinos
                                 router.setValue(node.tableId, node.tableId, node.cost);
                             }
                             else{
                                 
-                                System.out.println("SENDER("+node.ip+")  Error. Expected WELCOME ");
+                                System.out.println("SENDER("+node.id+")  Error. Expected WELCOME ");
 
                             }
                         }
 
                     }
                     else{
-                        System.out.println("SENDER("+node.ip+")  Error. Wrong node responded. Expected: "+node.id+" Got: "+line1Data[1]);
+                        System.out.println("SENDER("+node.id+")  Error. Wrong node responded. Expected: "+node.id+" Got: "+line1Data[1]);
                     }         
 
                 }
                 else{
 
-                    System.out.println("SENDER("+node.ip+") Bad Response: "+responseLine1);
+                    System.out.println("SENDER("+node.id+") Bad Response: "+responseLine1);
                 }
             } catch (IOException e) {
-                System.out.println("SENDER("+node.ip+")  Error Connecting to node. Retry in next cycle...");
+                System.out.println("SENDER("+node.id+")  Error Connecting to node. Retry in next cycle...");
                 //Asumimos que el listener vecino murio y cerramos conexion
                 //Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
                 e.printStackTrace();
@@ -114,10 +114,10 @@ public class Sender implements Runnable {
                     String dv = message;
                     outToServer.writeBytes(dv);   
                     router.tableUpdates.clear(); 
-                    System.out.println("SENDER("+node.ip+") DV sent to: "+node.ip);
+                    System.out.println("SENDER("+node.id+") DV sent to: "+node.id);
               }
               catch (Exception e){
-                    System.out.println("SENDER("+node.ip+") Error Connecting to node. Retry in next cycle...");
+                    System.out.println("SENDER("+node.id+") Error Connecting to node. Retry in next cycle...");
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();
                     node.isUpSender = false;
@@ -145,10 +145,10 @@ public class Sender implements Runnable {
                     //Enviamos mensaje de KA
                     String dv = message;
                     outToServer.writeBytes(dv);     
-                    System.out.println("SENDER("+node.ip+")  Keep Alive sent to: "+node.ip);
+                    System.out.println("SENDER("+node.id+")  Keep Alive sent to: "+node.id);
               }
               catch (Exception e){
-                    System.out.println("SENDER("+node.ip+")  Error Connecting to node. Retry in next cycle...");
+                    System.out.println("SENDER("+node.id+")  Error Connecting to node. Retry in next cycle...");
                     e.printStackTrace();
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();

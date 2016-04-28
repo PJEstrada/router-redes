@@ -41,7 +41,7 @@ public class ConfigParser {
                         String id = data[0];
                         String ip = data[1];
                         int cost = Integer.parseInt(data[2]);
-                        nodes.add(new Node(id,cost,ip));
+                        nodes.add(new Node(id,cost,ip,true));
                     }
                     
                     else if(data.length == 2){

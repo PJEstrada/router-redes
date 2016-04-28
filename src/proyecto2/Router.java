@@ -34,7 +34,7 @@ public class Router {
         ArrayList<String> colName = new ArrayList<String>();
         colName.add("Destination");
         for(Node n: nodes){
-            colName.add(n.ip);
+            colName.add(n.id);
         }
         model.setColumnIdentifiers(colName.toArray());
         //Inicializamos tabla con infinitos
@@ -54,7 +54,7 @@ public class Router {
         //Seteando header de filas
         i=0;
         for(Node n: nodes){
-            model.setValueAt(n.ip,i , 0);
+            model.setValueAt(n.id,i , 0);
             i++;
         }
         //Creamos conexiones
@@ -113,7 +113,7 @@ public class Router {
             int num = min(row);
             if(num != 99){
                 Node n = this.getNodeByTableId(i);
-                String msg =  n.ip+","+num;
+                String msg =  n.id+","+num;
                 result.add(msg);
             
             }
@@ -124,7 +124,7 @@ public class Router {
     
     public void sendInitialDV(Node node){
             ArrayList<String> updates = constructDVMessage();
-            System.out.println("Router: Sending Initial DV to Node: "+node.ip);
+            System.out.println("Router: Sending Initial DV to Node: "+node.id);
             String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n"+"Len:"+updates.size()+"\n";
             for(String s: updates){
                 message += s+"\n";
@@ -150,6 +150,18 @@ public class Router {
             
                
     
+    
+    }
+    
+    public ArrayList<String> getVecinos(){
+        ArrayList<String> result = new ArrayList<String>();
+        for(Node n: this.nodes){
+            if(n.isVecino){
+                result.add(n.ip);
+            }
+        
+        }
+        return result;
     
     }
     public void setValue(int i, int j, int value){
@@ -214,7 +226,7 @@ public class Router {
                 //System.out.println("n.isUpSender="+n.isUpSender);
                 if(!n.isSending){
                    if(n.isUpSender){
-                       System.out.println("Router: Sending Keep Alive to: "+n.ip);
+                       System.out.println("Router: Sending Keep Alive to: "+n.id);
                        Thread threadSender = new Thread(new Sender(n,check,3,this));
                        threadSender.start();
                    }
@@ -239,8 +251,9 @@ public class Router {
         
         }
         //Seteamos el header de la fila
-        this.model.setValueAt(n.ip,n.tableId,0);
         this.model.addRow(newRow.toArray());
+        this.model.setValueAt(n.id,n.tableId,0);
+
         newRow.remove(newRow.size()-1);
         this.routingTable.add(newRow);
         this.setValue(n.tableId, nodeFrom.tableId, n.cost);
@@ -272,14 +285,14 @@ public class Router {
     public void checkKeepAlive(){
         
         for(Node n: nodes){
-            System.out.println("ROUTER: checking if "+n.ip+" is alive...");
+            System.out.println("ROUTER: checking if "+n.id+" is alive...");
             if(n.keepAlive == true){
-                System.out.println("ROUTER: Node: "+n.ip+" is up.");
+                System.out.println("ROUTER: Node: "+n.id+" is up.");
                 n.keepAlive = false;
             
             }
             else{
-                System.out.println("ROUTER: Node: "+n.ip+" dead. Closing socket...");
+                System.out.println("ROUTER: Node: "+n.id+" dead. Closing socket...");
                 try {
                     //Cerramos el socket del nodo conectado
                     if(n.socket!=null){
@@ -312,18 +325,18 @@ public class Router {
                 int dv = Integer.parseInt(data[1]);
                 dv = dv+nodeFrom.cost;
                 //Agregamos nueva fila a la tabla
-                Node newNode = new Node(data[0],dv,data[0]);
+                Node newNode = new Node(data[0],dv,"No-IP",false);
                 this.addNewNode(newNode, nodeFrom);
-                this.tableUpdates.add(newNode.ip+":"+newNode.cost);  //Cambio tambien en NodeConecction al recibir HELLO
+                this.tableUpdates.add(newNode.id+":"+newNode.cost);  //Cambio tambien en NodeConecction al recibir HELLO
             }
             
             else{
-                System.out.println("Updating cost in col: "+nodeFrom.ip+" Row:"+n.ip);
+                System.out.println("Updating cost in col: "+nodeFrom.id+" Row:"+n.id);
                 int oldCost = this.getValue(n.tableId,n.tableId);
                 int dv = Integer.parseInt(data[1]);
                 if(oldCost> (dv+nodeFrom.cost)){
                     this.setValue(n.tableId, nodeFrom.tableId, dv+nodeFrom.cost);
-                    this.tableUpdates.add(n.ip+":"+dv+nodeFrom.cost);
+                    this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);
                 
                 }
             

@@ -23,8 +23,9 @@ public class Node {
     public NodeConnection listenerConnection;
     public boolean keepAlive;
     public boolean isSending;
+    public boolean isVecino;
     
-    public Node(String id, int cost,String ip){
+    public Node(String id, int cost,String ip,boolean isVecino){
         this.tableId = nodeCounter;
         nodeCounter++;
         this.id = id;
@@ -34,6 +35,7 @@ public class Node {
         this.isUpSender = false;
         this.keepAlive = false;
         this.isSending = false;
+        this.isVecino = isVecino;
     }
     
     

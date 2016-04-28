@@ -78,11 +78,11 @@ public class MessageConnection implements Runnable{
                 //redirigir
                 String redirectTo = ft.queryTable(TO); //revisar la tabla
                 if(redirectTo.equals("none")){
-                    System.out.println("ERROR no hay RUTA!");
+                    System.out.println("------------------FORWARDER: ERROR no hay RUTA!");
                 }
                 else{
                     //abrir Socket al puerto 9081 de la ip TO
-                    System.out.println("Forward "+m.from+" to "+TO+" through -> "+redirectTo);
+                    System.out.println("------------------FORWARDER: forwarding "+m.from+" to "+TO+" through -> "+redirectTo);
                     Socket tempSocket = new Socket(redirectTo, 9081);
                     //InputStreamReader input = new InputStreamReader(tempSocket.getInputStream());
                     //BufferedReader reader = new BufferedReader(input);                 
