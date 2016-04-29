@@ -25,7 +25,26 @@ public class Node {
     public boolean isSending;
     public boolean isVecino;
     public boolean initialDV;
+    public Thread senderThread;
+    public Sender nodeSender;
     
+    public Node(String id, int cost,String ip,boolean isVecino,Router r){
+        this.tableId = nodeCounter;
+        nodeCounter++;
+        this.id = id;
+        this.cost = cost;
+        this.ip = ip;
+        this.isUpListener = false;
+        this.isUpSender = false;
+        this.keepAlive = false;
+        this.isSending = false;
+        this.isVecino = isVecino;
+        this.initialDV = false;
+        String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
+        this.nodeSender = new Sender(this,hello,1,r);
+        senderThread = new Thread(nodeSender);
+        
+    }
     public Node(String id, int cost,String ip,boolean isVecino){
         this.tableId = nodeCounter;
         nodeCounter++;
@@ -38,7 +57,13 @@ public class Node {
         this.isSending = false;
         this.isVecino = isVecino;
         this.initialDV = false;
-    }
-    
+
+        
+    }   
+     public void setRouter(Router r){
+        String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
+        this.nodeSender = new Sender(this,hello,1,r);
+        senderThread = new Thread(nodeSender);
+     }
     
 }

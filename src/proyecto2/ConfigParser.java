@@ -19,8 +19,10 @@ public class ConfigParser {
     
     
     ArrayList<Node> nodes;
+    
     public ConfigParser(){
         this.nodes = new ArrayList<Node>();
+       
         
     }
     

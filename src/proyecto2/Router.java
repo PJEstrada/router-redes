@@ -57,6 +57,10 @@ public class Router {
             model.setValueAt(n.id,i , 0);
             i++;
         }
+        for(Node n:this.nodes){
+            n.setRouter(this);
+            
+        }
         //Creamos conexiones
         this.createConnectionsWithNodes();
         //Seteamos costos de enlaces directos a nodos vecinos
@@ -65,22 +69,31 @@ public class Router {
 
     public void createConnectionsWithNodes(){
         for(Node n: this.nodes){
-            if(!n.isSending){
+            
+
+            if(!n.senderThread.isAlive()){
                 System.out.println("ROUTER: Creating connection with node: "+n.id);
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
-                Thread threadSender = new Thread(new Sender(n,hello,1,this));
-                threadSender.start();           
+                n.nodeSender.message = hello;
+                n.nodeSender.type = 1;
+                n.senderThread.start();
             }
+                
+                
+                         
+            
         }
     
     }
     
     public void createConnectionWithNode(Node n){
-        System.out.println("ROUTER: Creating connection with node: "+n.id);
-        if(!n.isSending){
-            String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
-            Thread threadSender = new Thread(new Sender(n,hello,1,this));
-            threadSender.start();       
+        
+        if(!n.senderThread.isAlive()){
+                System.out.println("ROUTER: Creating connection with node: "+n.id);
+                String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
+                n.nodeSender.message = hello;
+                n.nodeSender.type = 1;
+                n.senderThread.start();      
         
         }
 
@@ -113,7 +126,7 @@ public class Router {
             int num = min(row);
             if(num != 99){
                 Node n = this.getNodeByTableId(i);
-                String msg =  n.id+","+num;
+                String msg =  n.id+":"+num;
                 result.add(msg);
             
             }
@@ -129,26 +142,23 @@ public class Router {
             for(String s: updates){
                 message += s+"\n";
             
-            }
-           
-            if(!node.isSending){
-                if(node.isUpSender){
+            }                     
+            if(node.isUpSender){
+                if(!node.senderThread.isAlive()){
                     System.out.println("ROUTER: DV Message to send:"+message);
-                    Thread threadSender = new Thread(new Sender(node,message,4,this));
-                    threadSender.start();             
+                    node.nodeSender.message = message;
+                    node.nodeSender.type = 4;
+                    node.senderThread.start();                  
                 }
+
                 else{
-                    this.createConnectionWithNode(node);
+                    System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
                 }
-
-
+            
             }
             else{
-                System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
-            }
-
-            
-               
+                this.createConnectionWithNode(node);
+            }    
     
     
     }
@@ -164,7 +174,7 @@ public class Router {
         return result;
     
     }
-    public void setValue(int i, int j, int value){
+    public synchronized void setValue(int i, int j, int value){
         
         this.routingTable.get(i).set(j, value);
         model.setValueAt(value, i, j+1);
@@ -188,49 +198,36 @@ public class Router {
     
     
     public void sendNewDistanceVectors(){
-        
+        System.out.println("Router: Sending DV to All Nodes... ");
         //Enviando DV iniciales si aun no se han enviado
-        for(Node n: this.nodes){
-            if(n.isUpSender){
-                if(n.initialDV==false){
-                    this.sendInitialDV(n);
-                }
-        
+        for(Node n: this.nodes){      
+            if(n.initialDV==false){
+                this.sendInitialDV(n);
             }
-            else{
-                this.createConnectionWithNode(n);
-            }
-
         }
         
         if(!tableUpdates.isEmpty()){
-            System.out.println("Router: Sending DV to All Nodes... ");
+            
             String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n"+"Len:"+this.tableUpdates.size()+"\n";
             for(String s: this.tableUpdates){
                 message += s+"\n";
             
             }
             for(Node n: this.nodes){
-                if(!n.isSending){
-                    if(n.isUpSender){
-                     
+                if(n.isUpSender){
+                    if(!n.senderThread.isAlive()){
                         System.out.println("ROUTER: DV Message to send:"+message);
-                        Thread threadSender = new Thread(new Sender(n,message,2,this));
-                        threadSender.start();                       
-
-
-             
+                        n.nodeSender.message = message;
+                        n.nodeSender.type = 2;
+                        n.senderThread.start();
                     }
                     else{
-                        this.createConnectionWithNode(n);
+                        System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
                     }
-              
-                
                 }
                 else{
-                    System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
+                    this.createConnectionWithNode(n);
                 }
-                
             }
             
         
@@ -242,15 +239,19 @@ public class Router {
             for(Node n: nodes){
                 //System.out.println("n.isSending="+n.isSending);
                 //System.out.println("n.isUpSender="+n.isUpSender);
-                if(!n.isSending){
+                if(!n.senderThread.isAlive()){
                    if(n.isUpSender){
                        System.out.println("Router: Sending Keep Alive to: "+n.id);
-                       Thread threadSender = new Thread(new Sender(n,check,3,this));
-                       threadSender.start();
+                       n.nodeSender.message = check;
+                       n.nodeSender.type = 3;
+                       n.senderThread.start();
                    }
                    else{
                        this.createConnectionWithNode(n);
                    }               
+                }
+                else{
+                    System.out.println("ROUTER: cannot send Keep Alive. Sender thread waiting for response,");
                 }
 
             
@@ -300,7 +301,7 @@ public class Router {
     
     }
     
-    public void checkKeepAlive(){
+    public synchronized void checkKeepAlive(){
         
         for(Node n: nodes){
             System.out.println("ROUTER: checking if "+n.id+" is alive...");
@@ -330,10 +331,11 @@ public class Router {
         
     
     }
-    public void updateTable(ArrayList<String> newDistanceVectors,Node nodeFrom){
+    public synchronized void updateTable(ArrayList<String> newDistanceVectors,Node nodeFrom){
         System.out.println("Updating DV Table");
         for(String line: newDistanceVectors){
             String[] data= line.split(":");
+            System.out.println("Current Update:"+line);
             Node n = this.getNode(data[0]);
             if(data[0].equalsIgnoreCase(Proyecto2.nodeName)){
                 continue;  //Si el nodo soy yo. Lo salto.
@@ -343,7 +345,7 @@ public class Router {
                 int dv = Integer.parseInt(data[1]);
                 dv = dv+nodeFrom.cost;
                 //Agregamos nueva fila a la tabla
-                Node newNode = new Node(data[0],dv,"No-IP",false);
+                Node newNode = new Node(data[0],dv,"No-IP",false,this);
                 this.addNewNode(newNode, nodeFrom);
                 this.tableUpdates.add(newNode.id+":"+newNode.cost);  //Cambio tambien en NodeConecction al recibir HELLO
             }

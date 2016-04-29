@@ -32,12 +32,17 @@ public class Proyecto2 {
     static final String  nodeIP = "172.20.9.84";
     static final String nodeName = "PABLO";
     public static void main(String[] args) throws IOException {
+        
+
+        
+        
         JFrame frameTablas = new JFrame();
 
         ConfigParser config = new ConfigParser();
         //Obtenemos datos de los nodos vecinos
         ArrayList<Node> nodes = config.parseConfigFile();        
         Router router = new Router(nodes);
+       
         ForwardingTable ft = new ForwardingTable(nodes, router);
         
         //Creamos listener para escuchar puerto 9080 mensajes de nodos vecinos
@@ -45,7 +50,7 @@ public class Proyecto2 {
         Thread threadListener = new Thread(listener);
         threadListener.start();
         
-        //crear listenerApp y threadApp y correrlo en el puerto 9081
+        //crear listenerApp y threadApp y correrlo en el puerto 1981
         ListenerApp listenerApp = new ListenerApp(ft);
         Thread threadApp = new Thread(listenerApp);
         threadApp.start();
@@ -73,7 +78,7 @@ public class Proyecto2 {
         
         UserFrame frame = new UserFrame(ft);
         frame.setVisible(true);
-        // 1000 milliseconds in a second * 60 per minute * the MINUTES variable. 1 
+        // 1000 milliseconds in a second * 60 per minute * the MINUTES variable. 1 */
         }
     
 }

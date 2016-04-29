@@ -70,8 +70,9 @@ public class NodeConnection implements Runnable{
                 while(!input.ready()){
                     ;
                 }
+                System.out.println("LISTENER: Received new message...");
                 linea = input.readLine();
-                //System.out.println("Line 1: "+linea);
+                System.out.println("Line 1: "+linea);
                 String[] fromData = linea.split(":");
                 if(fromData.length==2&&fromData[0].equalsIgnoreCase("FROM")){
                     //System.out.println("From Ok.");
@@ -81,7 +82,7 @@ public class NodeConnection implements Runnable{
                         ;
                     }
                     linea = input.readLine();  
-                    //System.out.println("Line 2: "+linea);
+                    System.out.println("Line 2: "+linea);
                     String[] typeData = linea.split(":");
                     if(typeData.length==2&&typeData[0].equalsIgnoreCase("TYPE")){
                        typeName  = typeData[1]; 
@@ -90,8 +91,8 @@ public class NodeConnection implements Runnable{
                            //Si el nodo no existe debemos crear uno nuevo como vecino
                            if(n==null){
                                //Costo por default 5
-                               
-                               Node newNode = new Node(routerName,5,socket.getLocalAddress().getHostAddress(),true);
+                               System.out.println("New Socket IP:"+socket.getLocalAddress().getHostName());
+                               Node newNode = new Node(routerName,5,socket.getLocalAddress().getHostAddress(),true,router);
                                this.router.addNewNeighborNode(newNode);
                                newNode.isUpListener = true;
                                newNode.listenerConnection=this;

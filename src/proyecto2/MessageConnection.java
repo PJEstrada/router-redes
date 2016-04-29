@@ -37,8 +37,8 @@ public class MessageConnection implements Runnable{
         DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());        
         this.input = reader;
         this.output = output;
-        sendResponse("9081 Node Mike ROUTER UVG: \n");  
-        System.out.println("Conexion entrante 9081");
+        sendResponse("1981 Node Mike ROUTER UVG: \n");  
+        System.out.println("Conexion entrante 1981");
     }
     
     public void readRequest() throws IOException{
@@ -81,9 +81,9 @@ public class MessageConnection implements Runnable{
                     System.out.println("------------------FORWARDER: ERROR no hay RUTA!");
                 }
                 else{
-                    //abrir Socket al puerto 9081 de la ip TO
+                    //abrir Socket al puerto 1981 de la ip TO
                     System.out.println("------------------FORWARDER: forwarding "+m.from+" to "+TO+" through -> "+redirectTo);
-                    Socket tempSocket = new Socket(redirectTo, 9081);
+                    Socket tempSocket = new Socket(redirectTo, 1981);
                     //InputStreamReader input = new InputStreamReader(tempSocket.getInputStream());
                     //BufferedReader reader = new BufferedReader(input);                 
                     DataOutputStream output = new DataOutputStream(tempSocket.getOutputStream());                     

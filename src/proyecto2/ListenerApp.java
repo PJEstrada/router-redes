@@ -20,16 +20,16 @@ public class ListenerApp implements Runnable{
     
     public ListenerApp(ForwardingTable ft) throws IOException{
         System.out.println("Inicializando Listener App");
-        socket  = new ServerSocket(9081);  
+        socket  = new ServerSocket(1981);  
         this.ft = ft;
     }
     
     @Override
     public void run() {
-        System.out.println("Listener Initialized port: 9081");
+        System.out.println("Listener Initialized port: 1981");
         while(true){            
             try{
-                //aceptar conexiones al puerto 9081
+                //aceptar conexiones al puerto 1981
                 final Socket clientSocket = socket.accept();
                 //Nueva request
                 MessageConnection request = new MessageConnection(clientSocket, ft);

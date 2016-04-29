@@ -73,7 +73,7 @@ public class ForwardingTable {
     
     public void forwardMessage(Message msg) throws IOException{
         //asume que el destinatario no es LOCALHOST
-        Socket tempSocket = new Socket(msg.to, 9081);                
+        Socket tempSocket = new Socket(msg.to, 1981);                
         DataOutputStream output = new DataOutputStream(tempSocket.getOutputStream());                     
         //enviar el mensaje
         String linea = msg.messageToFormat();
