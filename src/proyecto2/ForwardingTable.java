@@ -72,6 +72,9 @@ public class ForwardingTable {
 
     public void forwardMessage(Message msg) throws IOException{
         //asume que el destinatario no es LOCALHOST
+        
+        
+        
         Socket tempSocket = new Socket(msg.to, 1981);                
         DataOutputStream output = new DataOutputStream(tempSocket.getOutputStream());                     
         //enviar el mensaje
@@ -265,7 +268,7 @@ public class ForwardingTable {
             //por cada fila de la tabla de forwarding
             //revisar sea el destino
             if(row.get(0).equals(n.id)){
-                return row.get(1); //regresar la ip
+                return router.getNode(row.get(1)).ip; //regresar la ip
             }
         }
         //no hay ruta ERROR?

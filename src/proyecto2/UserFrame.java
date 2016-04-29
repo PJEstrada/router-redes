@@ -241,7 +241,7 @@ public class UserFrame extends javax.swing.JFrame {
             return;
         }
         // Se crea un objeto mensaje
-        Message enviar = new Message(deEnviar,paraEnviar,mensajeEnviar);
+        Message enviar = new Message(deEnviar,paraEnviarA,mensajeEnviar);
         try {
             //Envio a forwarder
             forwarder.forwardMessage(enviar);
