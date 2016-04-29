@@ -99,6 +99,7 @@ public class NodeConnection implements Runnable{
                                newNode.keepAlive = true;
                                sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
                                router.sendInitialDV(newNode);
+                               router.tableUpdates.add(newNode.id+":"+newNode.cost);
                                System.out.println("LISTENER: Received HELLO From: "+newNode.id);
                            }
                            else{
@@ -109,6 +110,7 @@ public class NodeConnection implements Runnable{
                                 router.setValue(n.tableId, n.tableId, n.cost);
                                 router.sendInitialDV(n);
                                 sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
+                                router.tableUpdates.add(n.id+":"+n.cost);
                                 System.out.println("LISTENER: Received HELLO From: "+n.id);
                                 
                            }
