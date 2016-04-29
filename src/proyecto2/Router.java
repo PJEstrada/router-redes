@@ -85,7 +85,7 @@ public class Router {
             else{
                 System.out.println("ROUTER: cannot send HELLO. Sender thread waiting for response,");
             }
-                
+            
                 
                          
             
@@ -194,6 +194,7 @@ public class Router {
         
         this.routingTable.get(i).set(j, value);
         model.setValueAt(value, i, j+1);
+        ft.recalculateTable();
     
     }
     public int getValue(int i , int j){
