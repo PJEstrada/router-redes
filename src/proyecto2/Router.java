@@ -99,7 +99,7 @@ public class Router {
                 n.senderThread.stop();
                 n.nodeSender.message = hello;
                 n.nodeSender.type = 1;
-                n.senderThread = new Thread(node.nodeSender);
+                n.senderThread = new Thread(n.nodeSender);
                 n.senderThread.start();   
         
         }
