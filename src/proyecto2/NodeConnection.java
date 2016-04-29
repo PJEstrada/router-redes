@@ -110,7 +110,10 @@ public class NodeConnection implements Runnable{
                                 router.setValue(n.tableId, n.tableId, n.cost);
                                 router.sendInitialDV(n);
                                 sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
-                                router.tableUpdates.add(n.id+":"+n.cost);
+                                if(n.cost!=99){
+                                    router.tableUpdates.add(n.id+":"+n.cost);
+                                }
+                                
                                 System.out.println("LISTENER: Received HELLO From: "+n.id);
                                 
                            }
