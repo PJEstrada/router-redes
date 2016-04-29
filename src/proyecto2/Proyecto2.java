@@ -33,10 +33,15 @@ public class Proyecto2 {
     static final String nodeName = "PABLO";
     public static void main(String[] args) throws IOException {
         
-
+        Thread t = new Thread(new Test());
         
+        t.start();
+        while(true){
+            System.out.println("Thread state:"+t.getState());
+            System.out.println("Thread is alive: "+t.isAlive());
+        }
         
-        JFrame frameTablas = new JFrame();
+       /* JFrame frameTablas = new JFrame();
 
         ConfigParser config = new ConfigParser();
         //Obtenemos datos de los nodos vecinos

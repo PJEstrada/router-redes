@@ -76,7 +76,12 @@ public class Router {
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
                 n.nodeSender.message = hello;
                 n.nodeSender.type = 1;
-                n.senderThread.start();
+                if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                   n.senderThread.run(); 
+                }
+                else{
+                   n.senderThread.start();
+                }  
             }
                 
                 
@@ -93,7 +98,12 @@ public class Router {
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
                 n.nodeSender.message = hello;
                 n.nodeSender.type = 1;
-                n.senderThread.start();      
+                if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                   n.senderThread.run(); 
+                }
+                else{
+                   n.senderThread.start();
+                }     
         
         }
 
@@ -148,7 +158,13 @@ public class Router {
                     System.out.println("ROUTER: DV Message to send:"+message);
                     node.nodeSender.message = message;
                     node.nodeSender.type = 4;
-                    node.senderThread.start();                  
+                    if(node.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                       node.senderThread.run(); 
+                    }
+                    else{
+                       node.senderThread.start();
+                    }
+                                      
                 }
 
                 else{
@@ -219,7 +235,13 @@ public class Router {
                         System.out.println("ROUTER: DV Message to send:"+message);
                         n.nodeSender.message = message;
                         n.nodeSender.type = 2;
-                        n.senderThread.start();
+                       if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                          n.senderThread.run(); 
+                       }
+                       else{
+                          n.senderThread.start();
+                       }
+                       
                     }
                     else{
                         System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
@@ -244,7 +266,13 @@ public class Router {
                        System.out.println("Router: Sending Keep Alive to: "+n.id);
                        n.nodeSender.message = check;
                        n.nodeSender.type = 3;
-                       n.senderThread.start();
+                       if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                          n.senderThread.run(); 
+                       }
+                       else{
+                          n.senderThread.start();
+                       }
+                       
                    }
                    else{
                        this.createConnectionWithNode(n);
