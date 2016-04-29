@@ -94,6 +94,16 @@ public class ForwardingTable {
         ipNodos = sortNodeIP(ipNodos);
         //agregar tantas filas como tenga rt
         //INICIALIZAR NUEVA TABLA DE FORWARDING
+        for(ArrayList<Integer> f: this.router.routingTable){
+            for(int a: f){
+                System.out.print(a+", ");
+                
+            
+            }
+            System.out.println("");
+            System.out.println("---------------------------");
+        
+        }
         int i = 0;
         System.out.println("Recalculando Forwarding");
         for(String nod : ipNodos){ //for nod in ipNodo
@@ -104,7 +114,17 @@ public class ForwardingTable {
             newFT.add(rowFT);
             i++;
         }
+        System.out.println("-----BEFORE");
+        for(ArrayList<String> f: this.forwardingTable){
+            for(String a: f){
+                System.out.print(a+", ");
+                
+            
+            }
+            System.out.println("");
+            System.out.println("---------------------------");
         
+        }        
         //por cada fila de ft
         //ACTUALIZAR FILA LEYENDO ROUTING
         ArrayList<ArrayList<String>> updatedFT = new ArrayList<ArrayList<String>>();
@@ -120,9 +140,28 @@ public class ForwardingTable {
         
         this.forwardingTable = updatedFT; //setear la nueva tabla
         i = 0;
-        model = new DefaultTableModel();
-        for(Node n: router.nodes){
+        System.out.println("-----AFTER");
+        for(ArrayList<String> f: this.forwardingTable){
+            for(String a: f){
+                System.out.print(a+", ");
+                
             
+            }
+            System.out.println("");
+            System.out.println("---------------------------");
+        
+        }        
+      
+        tabla = new JTable(1, 2);
+        model = (DefaultTableModel)tabla.getModel();
+        model.setRowCount(0);
+        ArrayList<String> columnName = new ArrayList<String>();
+        columnName.add("Destination");
+        columnName.add("Through");
+        model.setColumnIdentifiers(columnName.toArray());
+        i=0;        
+        for(Node n: router.nodes){
+            System.out.println("EL I DE LA TABLA :"+i);
             //agregar una fila por nodo de la red
             ArrayList<String> row = new ArrayList<String>();
             //nodo de la red
@@ -133,9 +172,12 @@ public class ForwardingTable {
             node = router.getNode(this.forwardingTable.get(i).get(1));
             //model.setValueAt(node.id, i, 1);
             row.add(node.id); //DEBE SER LA IP
+            System.out.println("ROW;"+row.toString());
             model.addRow(row.toArray());
+            
             i++;
-        }           
+        }   
+        this.tabla.setModel(model);
     }
     
     public ArrayList<String> sortNodeIP(ArrayList<String> ipNodos){

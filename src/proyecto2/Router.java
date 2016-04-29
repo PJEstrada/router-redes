@@ -191,7 +191,7 @@ public class Router {
     
     }
     public synchronized void setValue(int i, int j, int value){
-        
+        if(value>99){value = 99;}
         this.routingTable.get(i).set(j, value);
         model.setValueAt(value, i, j+1);
         Proyecto2.ft.recalculateTable();
@@ -348,7 +348,10 @@ public class Router {
                     Logger.getLogger(Router.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //Seteamos el costo de enlace directo a 99
-                this.setValue(n.tableId, n.tableId, 99);
+                for(Node n4: this.nodes){
+                    System.out.println("Node: "+n4.id+" Talbe id: "+n4.tableId);
+                }
+                this.setValue(n.tableId, n.tableId-1, 99);
                 n.isUpListener = false;
                 n.isUpSender = false;
             }
@@ -378,7 +381,7 @@ public class Router {
             
             else{
                 System.out.println("Updating cost in col: "+nodeFrom.id+" Row:"+n.id);
-                int oldCost = this.getValue(n.tableId,n.tableId);
+                int oldCost = this.getValue(n.tableId,n.tableId-1);
                 int dv = Integer.parseInt(data[1]);
                 if(oldCost> (dv+nodeFrom.cost)){
                     this.setValue(n.tableId, nodeFrom.tableId, dv+nodeFrom.cost);
