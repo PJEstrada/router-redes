@@ -284,7 +284,7 @@ public class UserFrame extends javax.swing.JFrame {
     private static String loadIDfromIP(String ip)
     {
         String resultado = "";
-        for(Node n : forwarder.nodes)
+        for(Node n : forwarder.router.nodes)
         {
             if(n.ip.equalsIgnoreCase(ip))
             {
@@ -297,7 +297,7 @@ public class UserFrame extends javax.swing.JFrame {
     private String loadIPfromID(String id)
     {
         String resultado = "";
-        for(Node n : forwarder.nodes)
+        for(Node n : forwarder.router.nodes)
         {
             if(n.id.equalsIgnoreCase(id))
             {

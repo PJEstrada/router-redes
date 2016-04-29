@@ -73,7 +73,7 @@ public class Router {
         for(Node n: this.nodes){
             
 
-            if(!n.senderThread.isAlive()){
+            if(!n.senderThread.isAlive()&&n.isVecino){
                 System.out.println("ROUTER: Creating connection with node: "+n.id);
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
                 n.senderThread.stop();
@@ -96,7 +96,7 @@ public class Router {
     
     public void createConnectionWithNode(Node n){
         
-        if(!n.senderThread.isAlive()){
+        if(!n.senderThread.isAlive()&&n.isVecino){
                 System.out.println("ROUTER: Creating connection with node: "+n.id);
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
                 n.senderThread.stop();
@@ -157,7 +157,7 @@ public class Router {
             
             }                     
             if(node.isUpSender){
-                if(!node.senderThread.isAlive()){
+                if(!node.senderThread.isAlive()&&node.isVecino){
                     System.out.println("ROUTER: DV Message to send:"+message);
                     node.senderThread.stop();
                     node.nodeSender.message = message;
@@ -218,7 +218,7 @@ public class Router {
         System.out.println("Router: Sending DV to All Nodes... ");
         //Enviando DV iniciales si aun no se han enviado
         for(Node n: this.nodes){      
-            if(n.initialDV==false){
+            if(n.initialDV==false&&n.isVecino){
                 this.sendInitialDV(n);
             }
         }
@@ -232,7 +232,7 @@ public class Router {
             }
             for(Node n: this.nodes){
                 if(n.isUpSender){
-                    if(!n.senderThread.isAlive()){
+                    if(!n.senderThread.isAlive()&&n.isVecino){
                         System.out.println("ROUTER: DV Message to send:"+message);
                         n.senderThread.stop();
                         n.nodeSender.message = message;
@@ -258,7 +258,7 @@ public class Router {
             for(Node n: nodes){
                 //System.out.println("n.isSending="+n.isSending);
                 //System.out.println("n.isUpSender="+n.isUpSender);
-                if(!n.senderThread.isAlive()){
+                if(!n.senderThread.isAlive()&&n.isVecino){
                    if(n.isUpSender){
                        System.out.println("Router: Sending Keep Alive to: "+n.id);
                        n.senderThread.stop();
@@ -285,6 +285,7 @@ public class Router {
     }
     
     public void addNewNode(Node n,Node nodeFrom){
+        n.isVecino = false;
         ArrayList<Integer> newRow = new ArrayList<Integer>();
         newRow.add(99);
         for(Node n1: this.nodes){
@@ -292,6 +293,7 @@ public class Router {
         
         
         }
+        this.nodes.add(n);
         //Seteamos el header de la fila
         this.model.addRow(newRow.toArray());
         this.model.setValueAt(n.id,n.tableId,0);
@@ -303,6 +305,7 @@ public class Router {
     }
     
     public void addNewNeighborNode(Node n){
+        n.isVecino = true;
         this.nodes.add(n);
         //Agregamos nueva fila
         ArrayList<Integer> newRow = new ArrayList<Integer>();

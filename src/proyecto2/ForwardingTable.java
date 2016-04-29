@@ -20,7 +20,6 @@ import javax.swing.table.DefaultTableModel;
 public class ForwardingTable {
     
     JTable tabla;
-    ArrayList<Node> nodes;
     ArrayList<String> vecinos;
     ArrayList<ArrayList<String>> forwardingTable;
     Router router;
@@ -28,7 +27,7 @@ public class ForwardingTable {
     DefaultTableModel model;
     
     public ForwardingTable(ArrayList<Node> nodes , Router router){    
-        this.nodes = nodes; 
+
         this.router = router;
         //guardar nodos vecinos
         vecinos = new ArrayList<String>();
@@ -122,7 +121,7 @@ public class ForwardingTable {
         this.forwardingTable = updatedFT; //setear la nueva tabla
         i = 0;
         model = new DefaultTableModel();
-        for(Node n: nodes){
+        for(Node n: router.nodes){
             
             //agregar una fila por nodo de la red
             ArrayList<String> row = new ArrayList<String>();
@@ -142,7 +141,7 @@ public class ForwardingTable {
     public ArrayList<String> sortNodeIP(ArrayList<String> ipNodos){
         //ordenar el ipNodo 
         //en base a los nodos       
-        int sizeNodes = nodes.size();
+        int sizeNodes = router.nodes.size();
         //llenar
         ArrayList<String> res = new ArrayList<String>();
         for(int i = 0; i < sizeNodes; i++){
@@ -151,7 +150,7 @@ public class ForwardingTable {
         
         //setear
         int i = 0;        
-        for(Node n : nodes){     
+        for(Node n : router.nodes){     
             System.out.println(n.tableId);
             res.set(n.tableId, n.ip);           
         }            
