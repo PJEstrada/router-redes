@@ -74,16 +74,14 @@ public class Router {
             if(!n.senderThread.isAlive()){
                 System.out.println("ROUTER: Creating connection with node: "+n.id);
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
+                n.senderThread.stop();
                 n.nodeSender.message = hello;
                 n.nodeSender.type = 1;
-                if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
-                    System.out.println("Running Sender...");
-                   n.senderThread.run(); 
-                }
-                else{
-                    System.out.println("Starting Sender...");
-                   n.senderThread.start();
-                }  
+                n.senderThread = new Thread(n.nodeSender);
+                n.senderThread.start();              
+            }
+            else{
+                System.out.println("ROUTER: cannot send HELLO. Sender thread waiting for response,");
             }
                 
                 
@@ -98,17 +96,15 @@ public class Router {
         if(!n.senderThread.isAlive()){
                 System.out.println("ROUTER: Creating connection with node: "+n.id);
                 String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
+                n.senderThread.stop();
                 n.nodeSender.message = hello;
                 n.nodeSender.type = 1;
-                if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
-                    System.out.println("Running Sender...");
-                   n.senderThread.run(); 
-                }
-                else{
-                    System.out.println("Starting Sender...");
-                   n.senderThread.start();
-                }     
+                n.senderThread = new Thread(node.nodeSender);
+                n.senderThread.start();   
         
+        }
+        else{
+            System.out.println("ROUTER: cannot send HELLO. Sender thread waiting for response,");
         }
 
     }
@@ -160,16 +156,11 @@ public class Router {
             if(node.isUpSender){
                 if(!node.senderThread.isAlive()){
                     System.out.println("ROUTER: DV Message to send:"+message);
+                    node.senderThread.stop();
                     node.nodeSender.message = message;
                     node.nodeSender.type = 4;
-                    if(node.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
-                        System.out.println("Running Sender...");
-                       node.senderThread.run(); 
-                    }
-                    else{
-                        System.out.println("Starting Sender...");
-                       node.senderThread.start();
-                    }
+                    node.senderThread = new Thread(node.nodeSender);
+                    node.senderThread.start();
                                       
                 }
 
@@ -239,17 +230,11 @@ public class Router {
                 if(n.isUpSender){
                     if(!n.senderThread.isAlive()){
                         System.out.println("ROUTER: DV Message to send:"+message);
+                        n.senderThread.stop();
                         n.nodeSender.message = message;
                         n.nodeSender.type = 2;
-                       if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
-                           System.out.println("Running Sender...");
-                          n.senderThread.run(); 
-                       }
-                       else{
-                           System.out.println("Starting Sender...");
-                          n.senderThread.start();
-                       }
-                       
+                        n.senderThread = new Thread(n.nodeSender);
+                        n.senderThread.start();
                     }
                     else{
                         System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
@@ -272,16 +257,12 @@ public class Router {
                 if(!n.senderThread.isAlive()){
                    if(n.isUpSender){
                        System.out.println("Router: Sending Keep Alive to: "+n.id);
+                       n.senderThread.stop();
                        n.nodeSender.message = check;
                        n.nodeSender.type = 3;
-                       if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
-                           System.out.println("Running Sender...");
-                          n.senderThread.run(); 
-                       }
-                       else{
-                           System.out.println("Starting Sender...");
-                          n.senderThread.start();
-                       }
+                       n.senderThread = new Thread(n.nodeSender);
+                       n.senderThread.start();
+                       
                        
                    }
                    else{
