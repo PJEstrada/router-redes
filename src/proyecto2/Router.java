@@ -23,9 +23,9 @@ public class Router {
     ArrayList<ArrayList<Integer>> routingTable;
     ArrayList<String> tableUpdates;
     DefaultTableModel model;
-    ForwardingTable ft;
-    public Router(ArrayList<Node> nodes,ForwardingTable f){
-        this.ft = f;
+    
+    public Router(ArrayList<Node> nodes){
+        
         tableUpdates = new ArrayList<String>();
         this.nodes = nodes;
         //Inicializando tabla GUI
@@ -194,7 +194,7 @@ public class Router {
         
         this.routingTable.get(i).set(j, value);
         model.setValueAt(value, i, j+1);
-        ft.recalculateTable();
+        Proyecto2.ft.recalculateTable();
     
     }
     public int getValue(int i , int j){

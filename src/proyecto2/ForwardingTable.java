@@ -70,8 +70,7 @@ public class ForwardingTable {
         recalculateTable();       
         
     }
-    public ForwardingTable(){
-    }
+
     public void forwardMessage(Message msg) throws IOException{
         //asume que el destinatario no es LOCALHOST
         Socket tempSocket = new Socket(msg.to, 1981);                

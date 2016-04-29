@@ -31,6 +31,7 @@ public class Proyecto2 {
     static int timeU=0;
     static final String  nodeIP = "172.20.9.84";
     static final String nodeName = "PABLO";
+    public static ForwardingTable ft;
     public static void main(String[] args) throws IOException {
         
        /* Thread t = new Thread(new Test());
@@ -42,14 +43,13 @@ public class Proyecto2 {
         }*/
         
        JFrame frameTablas = new JFrame();
-
+        
         ConfigParser config = new ConfigParser();
         //Obtenemos datos de los nodos vecinos
-        ArrayList<Node> nodes = config.parseConfigFile();   
-        ForwardingTable ft = new ForwardingTable();
-        Router router = new Router(nodes,ft);
+        ArrayList<Node> nodes = config.parseConfigFile();        
+        Router router = new Router(nodes);
        
-        ft = new ForwardingTable(nodes, router);
+        ft = new ForwardingTable(nodes,router);
         
         //Creamos listener para escuchar puerto 9080 mensajes de nodos vecinos
         Listener listener = new Listener(router);
