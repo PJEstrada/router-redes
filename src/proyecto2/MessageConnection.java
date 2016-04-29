@@ -69,7 +69,7 @@ public class MessageConnection implements Runnable{
             //Verificar destinatario de mensaje
             //Redirigir o guardar mensaje
             String TO = m.getTo().trim();
-            if(TO.equals(Proyecto2.nodeIP)){
+            if(TO.equals(Proyecto2.nodeName)){
                 //guardar mensaje               
                 UserFrame.messages.add(m);
                 UserFrame.displayMessage();
