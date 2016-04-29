@@ -45,10 +45,11 @@ public class Proyecto2 {
 
         ConfigParser config = new ConfigParser();
         //Obtenemos datos de los nodos vecinos
-        ArrayList<Node> nodes = config.parseConfigFile();        
-        Router router = new Router(nodes);
+        ArrayList<Node> nodes = config.parseConfigFile();   
+        ForwardingTable ft = new ForwardingTable();
+        Router router = new Router(nodes,ft);
        
-        ForwardingTable ft = new ForwardingTable(nodes, router);
+        ft = new ForwardingTable(nodes, router);
         
         //Creamos listener para escuchar puerto 9080 mensajes de nodos vecinos
         Listener listener = new Listener(router);

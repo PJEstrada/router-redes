@@ -23,7 +23,9 @@ public class Router {
     ArrayList<ArrayList<Integer>> routingTable;
     ArrayList<String> tableUpdates;
     DefaultTableModel model;
-    public Router(ArrayList<Node> nodes){
+    ForwardingTable ft;
+    public Router(ArrayList<Node> nodes,ForwardingTable f){
+        this.ft = f;
         tableUpdates = new ArrayList<String>();
         this.nodes = nodes;
         //Inicializando tabla GUI
@@ -88,6 +90,7 @@ public class Router {
                          
             
         }
+        
     
     }
     
@@ -384,6 +387,7 @@ public class Router {
         
         
         }
+        
 
     
     }
