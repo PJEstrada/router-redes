@@ -191,10 +191,16 @@ public class Router {
         
         //Enviando DV iniciales si aun no se han enviado
         for(Node n: this.nodes){
-            if(n.initialDV==true){
-                this.sendInitialDV(n);
-            }
+            if(n.isUpSender){
+                if(n.initialDV==false){
+                    this.sendInitialDV(n);
+                }
         
+            }
+            else{
+                this.createConnectionWithNode(n);
+            }
+
         }
         
         if(!tableUpdates.isEmpty()){
