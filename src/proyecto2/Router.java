@@ -77,9 +77,11 @@ public class Router {
                 n.nodeSender.message = hello;
                 n.nodeSender.type = 1;
                 if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                    System.out.println("Running Sender...");
                    n.senderThread.run(); 
                 }
                 else{
+                    System.out.println("Starting Sender...");
                    n.senderThread.start();
                 }  
             }
@@ -99,9 +101,11 @@ public class Router {
                 n.nodeSender.message = hello;
                 n.nodeSender.type = 1;
                 if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                    System.out.println("Running Sender...");
                    n.senderThread.run(); 
                 }
                 else{
+                    System.out.println("Starting Sender...");
                    n.senderThread.start();
                 }     
         
@@ -159,9 +163,11 @@ public class Router {
                     node.nodeSender.message = message;
                     node.nodeSender.type = 4;
                     if(node.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                        System.out.println("Running Sender...");
                        node.senderThread.run(); 
                     }
                     else{
+                        System.out.println("Starting Sender...");
                        node.senderThread.start();
                     }
                                       
@@ -236,9 +242,11 @@ public class Router {
                         n.nodeSender.message = message;
                         n.nodeSender.type = 2;
                        if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                           System.out.println("Running Sender...");
                           n.senderThread.run(); 
                        }
                        else{
+                           System.out.println("Starting Sender...");
                           n.senderThread.start();
                        }
                        
@@ -267,9 +275,11 @@ public class Router {
                        n.nodeSender.message = check;
                        n.nodeSender.type = 3;
                        if(n.senderThread.getState().toString().equalsIgnoreCase("TERMINATED")){
+                           System.out.println("Running Sender...");
                           n.senderThread.run(); 
                        }
                        else{
+                           System.out.println("Starting Sender...");
                           n.senderThread.start();
                        }
                        
