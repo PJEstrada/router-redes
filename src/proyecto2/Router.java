@@ -122,7 +122,7 @@ public class Router {
         return result;
     }
     
-    public String getInitialDV(Node node){
+    public void sendInitialDV(Node node){
             ArrayList<String> updates = constructDVMessage();
             System.out.println("Router: Sending Initial DV to Node: "+node.id);
             String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n"+"Len:"+updates.size()+"\n";
@@ -130,11 +130,11 @@ public class Router {
                 message += s+"\n";
             
             }
-           /*
+           
             if(!node.isSending){
                 if(node.isUpSender){
                     System.out.println("ROUTER: DV Message to send:"+message);
-                    Thread threadSender = new Thread(new Sender(node,message,2,this));
+                    Thread threadSender = new Thread(new Sender(node,message,4,this));
                     threadSender.start();             
                 }
                 else{
@@ -145,9 +145,9 @@ public class Router {
             }
             else{
                 System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
-            }*/
+            }
 
-            return message;
+            
                
     
     
@@ -189,8 +189,16 @@ public class Router {
     
     public void sendNewDistanceVectors(){
         
+        //Enviando DV iniciales si aun no se han enviado
+        for(Node n: this.nodes){
+            if(n.initialDV==true){
+                this.sendInitialDV(n);
+            }
+        
+        }
+        
         if(!tableUpdates.isEmpty()){
-            System.out.println("Router: Sending DV ");
+            System.out.println("Router: Sending DV to All Nodes... ");
             String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n"+"Len:"+this.tableUpdates.size()+"\n";
             for(String s: this.tableUpdates){
                 message += s+"\n";
@@ -199,9 +207,13 @@ public class Router {
             for(Node n: this.nodes){
                 if(!n.isSending){
                     if(n.isUpSender){
+                     
                         System.out.println("ROUTER: DV Message to send:"+message);
                         Thread threadSender = new Thread(new Sender(n,message,2,this));
-                        threadSender.start();             
+                        threadSender.start();                       
+
+
+             
                     }
                     else{
                         this.createConnectionWithNode(n);

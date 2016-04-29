@@ -97,6 +97,7 @@ public class Sender implements Runnable {
                 node.isUpSender = false;
                 router.setValue(node.tableId, node.tableId, 99);
                 node.isSending = false;
+                node.initialDV = false;
                 try {
                     closeConnection();
                 } catch (IOException ex) {
@@ -123,6 +124,7 @@ public class Sender implements Runnable {
                     node.isUpSender = false;
                     router.setValue(node.tableId, node.tableId, 99);
                     node.isSending = false;
+                    node.initialDV = false;
                     
                    try {
                         closeConnection();
@@ -137,7 +139,7 @@ public class Sender implements Runnable {
         }
        
         else if(type == 3){
-            //Enviamos DV
+            //Enviamos Keep Alive
               try{
                     DataOutputStream outToServer = new DataOutputStream(node.socket.getOutputStream()); 
                     BufferedReader inFromServer = new BufferedReader(new InputStreamReader(node.socket.getInputStream()));
@@ -155,6 +157,7 @@ public class Sender implements Runnable {
                     node.isUpSender = false;
                     router.setValue(node.tableId, node.tableId, 99);                    
                     node.isSending = false;
+                    node.initialDV = false;
                     try {
                         closeConnection();
                     } catch (IOException ex) {
@@ -162,6 +165,37 @@ public class Sender implements Runnable {
                     }
               }
         
+        
+        }
+        else if(type == 4){
+            //Enviamos DV inicial (Toda la tabla)
+              try{
+                    DataOutputStream outToServer = new DataOutputStream(node.socket.getOutputStream()); 
+                    BufferedReader inFromServer = new BufferedReader(new InputStreamReader(node.socket.getInputStream()));
+   
+                    //Enviamos mensaje de DV
+                    String dv = message;
+                    outToServer.writeBytes(dv);   
+                    router.tableUpdates.clear(); 
+                    node.initialDV = true;
+                    System.out.println("SENDER("+node.id+") DV sent to: "+node.id);
+              }
+              catch (Exception e){
+                    System.out.println("SENDER("+node.id+") Error Connecting to node. Retry in next cycle...");
+                   //Asumimos que el listener vecino murio y cerramos conexion
+                    e.printStackTrace();
+                    node.isUpSender = false;
+                    router.setValue(node.tableId, node.tableId, 99);
+                    node.isSending = false;
+                    node.initialDV = false;
+                    
+                   try {
+                        closeConnection();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+              }   
         
         }
         node.isSending = false;

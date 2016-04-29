@@ -97,8 +97,7 @@ public class NodeConnection implements Runnable{
                                newNode.listenerConnection=this;
                                newNode.keepAlive = true;
                                sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
-                               String initialDv = router.getInitialDV(newNode);
-                               this.sendResponse(initialDv);
+                               router.sendInitialDV(newNode);
                                System.out.println("LISTENER: Received HELLO From: "+newNode.id);
                            }
                            else{
@@ -107,8 +106,7 @@ public class NodeConnection implements Runnable{
                                 n.listenerConnection=this;
                                 n.keepAlive = true;
                                 router.setValue(n.tableId, n.tableId, n.cost);
-                                String initialDv = router.getInitialDV(n);
-                                this.sendResponse(initialDv);
+                                router.sendInitialDV(n);
                                 sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
                                 System.out.println("LISTENER: Received HELLO From: "+n.id);
                                 

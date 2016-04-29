@@ -24,6 +24,7 @@ public class Node {
     public boolean keepAlive;
     public boolean isSending;
     public boolean isVecino;
+    public boolean initialDV;
     
     public Node(String id, int cost,String ip,boolean isVecino){
         this.tableId = nodeCounter;
@@ -36,6 +37,7 @@ public class Node {
         this.keepAlive = false;
         this.isSending = false;
         this.isVecino = isVecino;
+        this.initialDV = false;
     }
     
     
