@@ -122,7 +122,7 @@ public class Router {
         return result;
     }
     
-    public void sendInitialDV(Node node){
+    public String getInitialDV(Node node){
             ArrayList<String> updates = constructDVMessage();
             System.out.println("Router: Sending Initial DV to Node: "+node.id);
             String message =  "From:"+Proyecto2.nodeName+"\n" +"Type:DV\n"+"Len:"+updates.size()+"\n";
@@ -130,7 +130,7 @@ public class Router {
                 message += s+"\n";
             
             }
-           
+           /*
             if(!node.isSending){
                 if(node.isUpSender){
                     System.out.println("ROUTER: DV Message to send:"+message);
@@ -145,9 +145,9 @@ public class Router {
             }
             else{
                 System.out.println("ROUTER: cannot send DV. Sender thread waiting for response,");
-            }
+            }*/
 
-            
+            return message;
                
     
     
