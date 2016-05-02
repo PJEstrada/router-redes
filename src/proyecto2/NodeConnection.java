@@ -107,7 +107,7 @@ public class NodeConnection implements Runnable{
                                 n.isUpListener = true;
                                 n.listenerConnection=this;
                                 n.keepAlive = true;
-                                router.setValue(n.tableId, n.tableId, n.cost);
+                                router.setValue(n.tableIdRow, n.tableIdCols, n.cost);
                                 router.sendInitialDV(n);
                                 sendResponse("From:"+Proyecto2.nodeName+"\n" +"Type:WELCOME\n");
                                 if(n.cost!=99){

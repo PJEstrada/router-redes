@@ -70,7 +70,7 @@ public class Sender implements Runnable {
                                 System.out.println("SENDER("+node.id+")  Connection Established with: "+node.id);
                                 node.isUpSender = true;
                                 //Seteamos costos de enlaces directos a nodos vecinos
-                                router.setValue(node.tableId, node.tableId, node.cost);
+                                router.setValue(node.tableIdRow, node.tableIdCols, node.cost);
                             }
                             else{
                                 
@@ -95,7 +95,7 @@ public class Sender implements Runnable {
                 //Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
                 e.printStackTrace();
                 node.isUpSender = false;
-                router.setValue(node.tableId, node.tableId, 99);
+                router.setValue(node.tableIdRow, node.tableIdCols, 99);
                 node.isSending = false;
                 node.initialDV = false;
                 try {
@@ -122,7 +122,7 @@ public class Sender implements Runnable {
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();
                     node.isUpSender = false;
-                    router.setValue(node.tableId, node.tableId, 99);
+                    router.setValue(node.tableIdRow, node.tableIdCols, 99);
                     node.isSending = false;
                     node.initialDV = false;
                     
@@ -155,7 +155,7 @@ public class Sender implements Runnable {
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();
                     node.isUpSender = false;
-                    router.setValue(node.tableId, node.tableId, 99);                    
+                    router.setValue(node.tableIdRow, node.tableIdCols, 99);                    
                     node.isSending = false;
                     node.initialDV = false;
                     try {
@@ -185,7 +185,7 @@ public class Sender implements Runnable {
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();
                     node.isUpSender = false;
-                    router.setValue(node.tableId, node.tableId, 99);
+                    router.setValue(node.tableIdRow, node.tableIdCols, 99);
                     node.isSending = false;
                     node.initialDV = false;
                     

@@ -12,12 +12,12 @@ import java.net.Socket;
  * @author pablo
  */
 public class Node {
+    public static int nodeCounterNeighbors;
     public static int nodeCounter;
-    
     public String id;
     public int cost;
     public Socket socket;
-    public int tableId;
+    public int tableIdCols,tableIdRow;
     public String ip;
     public boolean isUpListener,isUpSender;
     public NodeConnection listenerConnection;
@@ -29,8 +29,19 @@ public class Node {
     public Sender nodeSender;
     
     public Node(String id, int cost,String ip,boolean isVecino,Router r){
-        this.tableId = nodeCounter;
-        nodeCounter++;
+        if(isVecino ==true){
+            this.tableIdCols = nodeCounterNeighbors;
+            nodeCounterNeighbors++;   
+            this.tableIdRow = nodeCounter;
+            nodeCounter++;
+            
+        }
+        else{
+            this.tableIdRow = nodeCounter;
+            nodeCounter++;           
+        }
+        this.isVecino = isVecino;
+
         this.id = id;
         this.cost = cost;
         this.ip = ip;
@@ -38,7 +49,7 @@ public class Node {
         this.isUpSender = false;
         this.keepAlive = false;
         this.isSending = false;
-        this.isVecino = isVecino;
+
         this.initialDV = false;
         String hello = "From:"+Proyecto2.nodeName+"\n" +"Type:HELLO\n";
         this.nodeSender = new Sender(this,hello,1,r);
@@ -46,7 +57,18 @@ public class Node {
         
     }
     public Node(String id, int cost,String ip,boolean isVecino){
-        this.tableId = nodeCounter;
+        if(isVecino ==true){
+            this.tableIdCols = nodeCounterNeighbors;
+            nodeCounterNeighbors++;   
+            this.tableIdRow = nodeCounter;
+            nodeCounter++;
+            
+        }
+        else{
+            this.tableIdRow = nodeCounter;
+            nodeCounter++;           
+        }
+        this.isVecino = isVecino;
         nodeCounter++;
         this.id = id;
         this.cost = cost;

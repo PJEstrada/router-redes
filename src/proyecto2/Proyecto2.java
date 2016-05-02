@@ -29,7 +29,7 @@ public class Proyecto2 {
      */
     static int time=0;
     static int timeU=0;
-    static final String  nodeIP = "172.20.9.84";
+    static final String  nodeIP = "172.20.15.92";
     static final String nodeName = "PABLO";
     public static ForwardingTable ft;
     public static void main(String[] args) throws IOException {

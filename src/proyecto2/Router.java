@@ -122,9 +122,9 @@ public class Router {
         return min;
     }
     
-    public Node getNodeByTableId(int id){
+    public Node getNodeByTableIdRow(int id){
         for(Node n: this.nodes){
-            if(n.tableId==id){
+            if(n.tableIdRow==id){
                 return n;
             }
         
@@ -138,7 +138,7 @@ public class Router {
         for(ArrayList<Integer> row: this.routingTable){
             int num = min(row);
             if(num != 99){
-                Node n = this.getNodeByTableId(i);
+                Node n = this.getNodeByTableIdRow(i);
                 String msg =  n.id+":"+num;
                 result.add(msg);
             
@@ -296,11 +296,11 @@ public class Router {
         this.nodes.add(n);
         //Seteamos el header de la fila
         this.model.addRow(newRow.toArray());
-        this.model.setValueAt(n.id,n.tableId,0);
+        this.model.setValueAt(n.id,n.tableIdRow,0);
 
         newRow.remove(newRow.size()-1);
         this.routingTable.add(newRow);
-        this.setValue(n.tableId, nodeFrom.tableId, n.cost);
+        this.setValue(n.tableIdRow, nodeFrom.tableIdCols, n.cost);
     
     }
     
@@ -320,7 +320,7 @@ public class Router {
         }
         this.routingTable.add(newRow);
         //Seteamos el nuevo costo
-        this.setValue(n.tableId, n.tableId, n.cost);
+        this.setValue(n.tableIdRow, n.tableIdCols, n.cost);
         
         this.model.addColumn(n.id);
         this.model.addRow(newRow.toArray());
@@ -349,9 +349,9 @@ public class Router {
                 }
                 //Seteamos el costo de enlace directo a 99
                 for(Node n4: this.nodes){
-                    System.out.println("Node: "+n4.id+" Talbe id: "+n4.tableId);
+                    System.out.println("Node: "+n4.id+" Talbe idRow: "+n4.tableIdRow+"Tableid cols: "+n4.tableIdCols);
                 }
-                this.setValue(n.tableId, n.tableId-1, 99);
+                this.setValue(n.tableIdRow, n.tableIdCols, 99);
                 n.isUpListener = false;
                 n.isUpSender = false;
             }
@@ -381,10 +381,10 @@ public class Router {
             
             else{
                 System.out.println("Updating cost in col: "+nodeFrom.id+" Row:"+n.id);
-                int oldCost = this.getValue(n.tableId,n.tableId-1);
+                int oldCost = this.getValue(n.tableIdRow,nodeFrom.tableIdCols);
                 int dv = Integer.parseInt(data[1]);
                 if(oldCost> (dv+nodeFrom.cost)){
-                    this.setValue(n.tableId, nodeFrom.tableId, dv+nodeFrom.cost);
+                    this.setValue(n.tableIdRow, nodeFrom.tableIdCols, dv+nodeFrom.cost);
                     this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);
                 
                 }

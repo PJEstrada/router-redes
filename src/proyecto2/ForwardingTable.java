@@ -196,8 +196,8 @@ public class ForwardingTable {
         //setear
         int i = 0;        
         for(Node n : router.nodes){     
-            System.out.println(n.tableId);
-            res.set(n.tableId, n.ip);           
+            System.out.println(n.tableIdRow);
+            res.set(n.tableIdRow, n.ip);           
         }            
         return res;
     }
