@@ -183,7 +183,7 @@ public class Router {
         ArrayList<String> result = new ArrayList<String>();
         for(Node n: this.nodes){
             if(n.isVecino){
-                result.add(n.ip);
+                result.add(n.id);
             }
         
         }

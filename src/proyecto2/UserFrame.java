@@ -230,7 +230,7 @@ public class UserFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String paraEnviarA = jtfPara.getText();
         String paraEnviar = loadIPfromID(paraEnviarA);
-        System.out.println("ParaEnviar: "+paraEnviar);
+        System.out.println("ParaEnviaAr: "+paraEnviar);
         String mensajeEnviar = jtaParaMensaje.getText();
         String deEnviar = Proyecto2.nodeName;
         
@@ -244,6 +244,7 @@ public class UserFrame extends javax.swing.JFrame {
         Message enviar = new Message(deEnviar,paraEnviarA,mensajeEnviar);
         try {
             //Envio a forwarder
+            
             forwarder.forwardMessage(enviar);
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error en envio del mensaje. No se encuentra el host destino.");

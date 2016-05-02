@@ -65,7 +65,7 @@ public class MessageConnection implements Runnable{
             //Convertir a Message 
             Message m = new Message();
             m.formatToMessage(linea);
-            System.out.println(m.from+" "+m.to+" "+m.message);
+            System.out.println("------------------------FORWARDER: "+m.from+" "+m.to+" "+m.message);
             //Verificar destinatario de mensaje
             //Redirigir o guardar mensaje
             String TO = m.getTo().trim();

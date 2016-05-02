@@ -60,9 +60,9 @@ public class ForwardingTable {
             //agregar una fila por nodo de la red
             ArrayList<String> row = new ArrayList<String>();
             //nodo de la red
-            row.add(n.id); //DEBE SER LA IP
+            row.add(n.id); //DEBE SER LA ID
             //interfaz de salida
-            row.add(n.id); //DEBE SER LA IP
+            row.add(n.id); //DEBE SER LA ID
             model.addRow(row.toArray());
         }     
         //RECALCULAR
@@ -72,10 +72,10 @@ public class ForwardingTable {
 
     public void forwardMessage(Message msg) throws IOException{
         //asume que el destinatario no es LOCALHOST
-        
-        
-        
-        Socket tempSocket = new Socket(msg.to, 1981);                
+        String destino = this.queryTable(msg.to);
+        System.out.println("DESTINO FOrward message: "+destino+"Msg to:"+msg.to);
+        Node n = this.router.getNode(destino);
+        Socket tempSocket = new Socket(n.ip, 1981);                
         DataOutputStream output = new DataOutputStream(tempSocket.getOutputStream());                     
         //enviar el mensaje
         String linea = msg.messageToFormat();
@@ -172,9 +172,9 @@ public class ForwardingTable {
             row.add(node.id); //DEBE SER LA IP
            // model.setValueAt(node.id, i, 0);
             //interfaz de salida
-            node = router.getNode(this.forwardingTable.get(i).get(1));
+            Node node2 = router.getNode(this.forwardingTable.get(i).get(1));
             //model.setValueAt(node.id, i, 1);
-            row.add(node.id); //DEBE SER LA IP
+            row.add(node2.id); //DEBE SER LA IP
             System.out.println("ROW;"+row.toString());
             model.addRow(row.toArray());
             
@@ -197,14 +197,14 @@ public class ForwardingTable {
         int i = 0;        
         for(Node n : router.nodes){     
             System.out.println(n.tableIdRow);
-            res.set(n.tableIdRow, n.ip);           
+            res.set(n.tableIdRow, n.id);           
         }            
         return res;
     }
     
-    public String calculateRoute(String dest, ArrayList<ArrayList<Integer>> rt, ArrayList<String> ipNodos){
+    public String calculateRoute(String destId, ArrayList<ArrayList<Integer>> rt, ArrayList<String> idNodos){
         //obtener indice de origin
-        int index = ipNodos.indexOf(dest);
+        int index = idNodos.indexOf(destId);
         //obtener la fila del indice
         ArrayList<Integer> fila = rt.get(index);
         
@@ -215,11 +215,11 @@ public class ForwardingTable {
         int i = 0;
         for(Integer peso : fila){
             if(peso == menorPeso){ //agregar a candidatos
-                candidatos.add(ipNodos.get(i));
+                candidatos.add(idNodos.get(i));
             }
             else if(peso < menorPeso){ //resetear candidados y agregar
                 candidatos.clear();
-                candidatos.add(ipNodos.get(i));
+                candidatos.add(idNodos.get(i));
                 menorPeso = peso;
             }            
             i++;
@@ -256,7 +256,7 @@ public class ForwardingTable {
         }       
         
         //Si no continuar recursivamente con destino = candidato
-        return calculateRoute(candidatoElegido, rt, ipNodos);        
+        return calculateRoute(candidatoElegido, rt, idNodos);        
     }
     
     public String queryTable(String ip){              
