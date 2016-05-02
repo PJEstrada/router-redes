@@ -330,31 +330,34 @@ public class Router {
     public synchronized void checkKeepAlive(){
         
         for(Node n: nodes){
-            System.out.println("ROUTER: checking if "+n.id+" is alive...");
-            if(n.keepAlive == true){
-                System.out.println("ROUTER: Node: "+n.id+" is up.");
-                n.keepAlive = false;
-            
-            }
-            else{
-                System.out.println("ROUTER: Node: "+n.id+" dead. Closing socket...");
-                try {
-                    //Cerramos el socket del nodo conectado
-                    if(n.socket!=null){
-                         n.socket.close();
+            if(n.isVecino==true){
+                System.out.println("ROUTER: checking if "+n.id+" is alive...");
+                if(n.keepAlive == true){
+                    System.out.println("ROUTER: Node: "+n.id+" is up.");
+                    n.keepAlive = false;
+
+                }
+                else{
+                    System.out.println("ROUTER: Node: "+n.id+" dead. Closing socket...");
+                    try {
+                        //Cerramos el socket del nodo conectado
+                        if(n.socket!=null){
+                             n.socket.close();
+                        }
+
+                    } catch (IOException ex) {
+                        Logger.getLogger(Router.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                   
-                } catch (IOException ex) {
-                    Logger.getLogger(Router.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                //Seteamos el costo de enlace directo a 99
-                for(Node n4: this.nodes){
-                    System.out.println("Node: "+n4.id+" Talbe idRow: "+n4.tableIdRow+"Tableid cols: "+n4.tableIdCols);
-                }
-                this.setValue(n.tableIdRow, n.tableIdCols, 99);
-                n.isUpListener = false;
-                n.isUpSender = false;
+                    //Seteamos el costo de enlace directo a 99
+                    for(Node n4: this.nodes){
+                        System.out.println("Node: "+n4.id+" Talbe idRow: "+n4.tableIdRow+"Tableid cols: "+n4.tableIdCols);
+                    }
+                    this.setValue(n.tableIdRow, n.tableIdCols, 99);
+                    n.isUpListener = false;
+                    n.isUpSender = false;
+                }            
             }
+
         
         }    
         

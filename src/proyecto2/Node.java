@@ -69,7 +69,6 @@ public class Node {
             nodeCounter++;           
         }
         this.isVecino = isVecino;
-        nodeCounter++;
         this.id = id;
         this.cost = cost;
         this.ip = ip;
