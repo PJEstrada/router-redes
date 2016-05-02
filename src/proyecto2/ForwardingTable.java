@@ -155,13 +155,7 @@ public class ForwardingTable {
         
         }        
       
-        tabla = new JTable(1, 2);
-        model = (DefaultTableModel)tabla.getModel();
         model.setRowCount(0);
-        ArrayList<String> columnName = new ArrayList<String>();
-        columnName.add("Destination");
-        columnName.add("Through");
-        model.setColumnIdentifiers(columnName.toArray());
         i=0;        
         for(Node n: router.nodes){
             System.out.println("EL I DE LA TABLA :"+i);
@@ -181,6 +175,8 @@ public class ForwardingTable {
             i++;
         }   
         this.tabla.setModel(model);
+        this.tabla.repaint();
+        this.tabla.setVisible(true);
     }
     
     public ArrayList<String> sortNodeIP(ArrayList<String> ipNodos){
