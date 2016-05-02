@@ -284,6 +284,14 @@ public class Router {
     
     }
     
+    public void setCol(int colId, int value){
+        int i = 0;
+        for(ArrayList<Integer> a :this.routingTable){
+            this.setValue(value, colId, value);
+            i++;
+        }
+    
+    }
     public void addNewNode(Node n,Node nodeFrom){
         n.isVecino = false;
         ArrayList<Integer> newRow = new ArrayList<Integer>();
@@ -351,6 +359,9 @@ public class Router {
                     //Seteamos el costo de enlace directo a 99
                     for(Node n4: this.nodes){
                         System.out.println("Node: "+n4.id+" Talbe idRow: "+n4.tableIdRow+"Tableid cols: "+n4.tableIdCols);
+                    }
+                    if(n.isVecino){
+                        this.setCol(n.tableIdCols,99);
                     }
                     this.setValue(n.tableIdRow, n.tableIdCols, 99);
                     n.isUpListener = false;

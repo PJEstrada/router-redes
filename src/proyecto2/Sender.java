@@ -95,6 +95,10 @@ public class Sender implements Runnable {
                 //Logger.getLogger(Sender.class.getName()).log(Level.SEVERE, null, ex);
                 e.printStackTrace();
                 node.isUpSender = false;
+                if(node.isVecino){
+                    router.setCol(node.tableIdCols,99);
+                }
+                
                 router.setValue(node.tableIdRow, node.tableIdCols, 99);
                 node.isSending = false;
                 node.initialDV = false;
@@ -122,6 +126,9 @@ public class Sender implements Runnable {
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();
                     node.isUpSender = false;
+                    if(node.isVecino){
+                        router.setCol(node.tableIdCols,99);
+                    }
                     router.setValue(node.tableIdRow, node.tableIdCols, 99);
                     node.isSending = false;
                     node.initialDV = false;
@@ -155,6 +162,9 @@ public class Sender implements Runnable {
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();
                     node.isUpSender = false;
+                    if(node.isVecino){
+                        router.setCol(node.tableIdCols,99);
+                    }
                     router.setValue(node.tableIdRow, node.tableIdCols, 99);                    
                     node.isSending = false;
                     node.initialDV = false;
@@ -185,6 +195,9 @@ public class Sender implements Runnable {
                    //Asumimos que el listener vecino murio y cerramos conexion
                     e.printStackTrace();
                     node.isUpSender = false;
+                    if(node.isVecino){
+                        router.setCol(node.tableIdCols,99);
+                    }
                     router.setValue(node.tableIdRow, node.tableIdCols, 99);
                     node.isSending = false;
                     node.initialDV = false;
