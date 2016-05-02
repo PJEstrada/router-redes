@@ -287,7 +287,7 @@ public class Router {
     public void setCol(int colId, int value){
         int i = 0;
         for(ArrayList<Integer> a :this.routingTable){
-            this.setValue(value, colId, value);
+            this.setValue(i, colId, value);
             i++;
         }
     
