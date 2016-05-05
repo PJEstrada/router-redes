@@ -168,7 +168,12 @@ public class ForwardingTable {
             //interfaz de salida
             Node node2 = router.getNode(this.forwardingTable.get(i).get(1));
             //model.setValueAt(node.id, i, 1);
-            row.add(node2.id); //DEBE SER LA IP
+            if(node2 == null){
+                row.add("none");
+            }
+            else{
+                row.add(node2.id); //DEBE SER LA IP
+            }            
             System.out.println("ROW;"+row.toString());
             model.addRow(row.toArray());
             
