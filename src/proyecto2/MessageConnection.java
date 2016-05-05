@@ -56,15 +56,20 @@ public class MessageConnection implements Runnable{
     public void run() {           
         try{
             readRequest();
-            String linea;
-            while(!input.ready()){
-                ; //wait
+            String linea="";
+            String msg="";
+            while(!linea.equalsIgnoreCase("EOF")){
+                while(!input.ready()){
+                    ; //wait
+                }
+                linea = input.readLine();            
+                msg+=linea+"\n";
             }
-            linea = input.readLine();
+
             
             //Convertir a Message 
             Message m = new Message();
-            m.formatToMessage(linea);
+            m.formatToMessage(msg);
             System.out.println("------------------------FORWARDER: "+m.from+" "+m.to+" "+m.message);
             //Verificar destinatario de mensaje
             //Redirigir o guardar mensaje

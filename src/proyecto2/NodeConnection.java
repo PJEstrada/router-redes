@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  *
  * @author pablo
  */
+
 public class NodeConnection implements Runnable{
     
     Socket socket;

@@ -246,8 +246,9 @@ public class UserFrame extends javax.swing.JFrame {
             //Envio a forwarder
             
             forwarder.forwardMessage(enviar);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
            JOptionPane.showMessageDialog(null, "Error en envio del mensaje. No se encuentra el host destino.");
+           System.out.println("APP: Error de envio: "+ex.getMessage());
         }
     }//GEN-LAST:event_jbEnviarActionPerformed
     
