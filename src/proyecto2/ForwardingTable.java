@@ -248,6 +248,9 @@ public class ForwardingTable {
         
         //Si es un vecino devolverlo
         if(router.getVecinos().contains(candidatoElegido)){
+            if(menorPeso >= 99){
+                return "none";
+            }
             return candidatoElegido;
         }       
         
