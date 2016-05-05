@@ -30,9 +30,9 @@ public class Message {
     public String messageToFormat()
     {
         String mensaje = "";
-        mensaje+="From: "+from;
-        mensaje+="To: "+to;
-        mensaje+="Msg: "+message;
+        mensaje+="From: "+from+"\n";
+        mensaje+="To: "+to+"\n";
+        mensaje+="Msg: "+message+"\n";
         mensaje+="EOF\n";
         return mensaje;
     }
