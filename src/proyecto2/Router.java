@@ -132,6 +132,16 @@ public class Router {
         } 
         return null;
     }
+    public Node getNodeByTableIdCol(int id){
+        for(Node n: this.nodes){
+            if(n.tableIdCols==id){
+                return n;
+            }
+        
+        
+        } 
+        return null;
+    }
     public ArrayList<String> constructDVMessage(){
         ArrayList<String> result = new ArrayList<String>();
         int i = 0;
@@ -194,7 +204,11 @@ public class Router {
         if(value>99){value = 99;}
         this.routingTable.get(i).set(j, value);
         model.setValueAt(value, i, j+1);
+        Node n1 = this.getNodeByTableIdRow(i);
+        Node n2 = this.getNodeByTableIdCol(j);
+        this.tableUpdates.add(n1.id+":"+value);
         Proyecto2.ft.recalculateTable();
+        
     
     }
     public int getValue(int i , int j){
