@@ -93,7 +93,7 @@ public class MessageConnection implements Runnable{
                     //BufferedReader reader = new BufferedReader(input);                 
                     DataOutputStream output = new DataOutputStream(tempSocket.getOutputStream());                     
                     //enviar el mensaje
-                    byte[] bytesEnviar = linea.getBytes();
+                    byte[] bytesEnviar = msg.getBytes();
                     output.write(bytesEnviar);
                     //cerrar el socket
                     tempSocket.close();
