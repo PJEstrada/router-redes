@@ -258,7 +258,7 @@ public class UserFrame extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Message m: messages)
         {
-            Object[] objs = {loadIDfromIP(m.from),m.message};
+            Object[] objs = {m.from,m.message};
             model.addRow(objs);
         }
     }
