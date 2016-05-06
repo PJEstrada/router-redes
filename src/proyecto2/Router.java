@@ -422,7 +422,13 @@ public class Router {
                     int finalVal = +dv+nodeFrom.cost;
                     this.tableUpdates.add(n.id+":"+finalVal);
                 
-                }  
+                }
+                else if(dv>=99){
+                    this.setValue(n.tableIdRow, nodeFrom.tableIdCols, 99);
+                    int finalVal = 99;
+                    this.tableUpdates.add(n.id+":"+finalVal);                
+                
+                }
             System.out.println("------------------------DV:"+dv);
             System.out.println("------------------------nodeFrom Cost:"+nodeFrom.cost);
             }
