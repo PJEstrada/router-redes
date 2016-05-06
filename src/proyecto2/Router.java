@@ -423,7 +423,7 @@ public class Router {
                     this.tableUpdates.add(n.id+":"+finalVal);
                 
                 }
-                else if(dv>=99){
+                else if(dv>=99 && allIn99(n)){
                     this.setValue(n.tableIdRow, nodeFrom.tableIdCols, 99);
                     int finalVal = 99;
                     this.tableUpdates.add(n.id+":"+finalVal);                
@@ -442,4 +442,13 @@ public class Router {
 
     
     }
+    public boolean allIn99(Node n){
+        for(ArrayList<Integer> row: this.routingTable){
+            if(row.get(n.tableIdCols)!=99){
+                return false;
+            }
+        }
+        return true;
+    }
+    
 }
