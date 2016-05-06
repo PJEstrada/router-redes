@@ -418,11 +418,7 @@ public class Router {
                     this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);
                 
                 }   
-                else if((dv+nodeFrom.cost)==99){
-                    System.out.println("UPDATE TABLE: "+99);
-                    this.setValue(n.tableIdRow, nodeFrom.tableIdCols, 99);
-                    this.tableUpdates.add(n.id+":"+99);                
-                }
+
             }
             
         
