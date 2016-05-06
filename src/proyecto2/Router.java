@@ -303,7 +303,8 @@ public class Router {
             this.setValue(i, colId, value);
             i++;
         }
-    
+        Node n=this.getNodeByTableIdCol(colId);
+        this.tableUpdates.add(n.id+":"+value);
     }
     public void addNewNode(Node n,Node nodeFrom){
         n.isVecino = false;
