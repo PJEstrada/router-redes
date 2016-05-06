@@ -305,6 +305,7 @@ public class Router {
         }
         Node n=this.getNodeByTableIdCol(colId);
         this.tableUpdates.add(n.id+":"+value);
+        
     }
     public void addNewNode(Node n,Node nodeFrom){
         n.isVecino = false;
@@ -390,9 +391,12 @@ public class Router {
     }
     public synchronized void updateTable(ArrayList<String> newDistanceVectors,Node nodeFrom){
         System.out.println("Updating DV Table");
+        
+        System.out.println("---------------NODEFROM:"+nodeFrom.id);
         for(String line: newDistanceVectors){
+
             String[] data= line.split(":");
-            System.out.println("Current Update:"+line);
+            System.out.println("---------------Current Update:"+line);
             Node n = this.getNode(data[0]);
             if(data[0].equalsIgnoreCase(Proyecto2.nodeName)){
                 continue;  //Si el nodo soy yo. Lo salto.
@@ -413,13 +417,17 @@ public class Router {
                 int dv = Integer.parseInt(data[1]);
                 if( (oldCost> (dv+nodeFrom.cost) )){
                     
-                    System.out.println("UPDATE TABLE: "+(dv+nodeFrom.cost));
+                    
                     this.setValue(n.tableIdRow, nodeFrom.tableIdCols, dv+nodeFrom.cost);
-                    this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);
+                    int finalVal = +dv+nodeFrom.cost;
+                    this.tableUpdates.add(n.id+":"+finalVal);
                 
-                }   
-
+                }  
+            System.out.println("------------------------DV:"+dv);
+            System.out.println("------------------------nodeFrom Cost:"+nodeFrom.cost);
             }
+
+             
             
         
         
