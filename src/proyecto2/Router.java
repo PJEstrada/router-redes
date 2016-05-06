@@ -411,21 +411,11 @@ public class Router {
                 int oldCost = this.getValue(n.tableIdRow,nodeFrom.tableIdCols);
                 int dv = Integer.parseInt(data[1]);
                 if( (oldCost> (dv+nodeFrom.cost))){
-                    
+                    System.out.println("UPDATE TABLE: "+(dv+nodeFrom.cost));
                     this.setValue(n.tableIdRow, nodeFrom.tableIdCols, dv+nodeFrom.cost);
                     this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);
                 
-                }
-                else if((dv+nodeFrom.cost>=99)){
-                    if(oldCost>=99){
-                        return;
-                    }
-                    else{
-                        this.setValue(n.tableIdRow, nodeFrom.tableIdCols, dv+nodeFrom.cost);
-                        this.tableUpdates.add(n.id+":"+dv+nodeFrom.cost);                      
-                    }
-                }
-            
+                }            
             }
             
         
