@@ -206,7 +206,6 @@ public class Router {
         model.setValueAt(value, i, j+1);
         Node n1 = this.getNodeByTableIdRow(i);
         Node n2 = this.getNodeByTableIdCol(j);
-        this.tableUpdates.add(n1.id+":"+value);
         Proyecto2.ft.recalculateTable();
         
     
